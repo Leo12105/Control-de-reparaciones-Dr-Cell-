@@ -3,144 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr Cell - Control de Reparaciones</title>
+    <title>Dr Cell - Gestión de Reparaciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg-primary: #0B0F19;
+            --bg-secondary: #111827;
+            --bg-card: #1F2937;
+            --bg-card-hover: #253041;
+            --bg-input: #111827;
+            --border: #2D3748;
+            --border-light: #374151;
+            --accent: #3B82F6;
+            --accent-hover: #2563EB;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --success: #10B981;
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --warning: #F59E0B;
+            --warning-bg: rgba(245, 158, 11, 0.1);
+            --danger: #EF4444;
+            --danger-bg: rgba(239, 68, 68, 0.1);
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --text-muted: #6B7280;
+            --radius: 10px;
+            --radius-lg: 14px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.4);
+            --transition: 0.2s ease;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a1a;
-            color: #e0e0e0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* SIDEBAR */
+        .layout {
+            display: flex;
             min-height: 100vh;
         }
 
-        /* HEADER */
-        .header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            padding: 20px;
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 200;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-brand .logo {
+            width: 42px;
+            height: 42px;
+            background: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #fff;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand .brand-text h2 {
+            font-size: 1.1em;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-brand .brand-text span {
+            font-size: 0.7em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .sidebar-nav {
+            padding: 16px 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .nav-section-title {
+            font-size: 0.65em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 16px 12px 8px;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.88em;
+            font-weight: 500;
+            transition: all var(--transition);
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--accent-glow);
+            color: var(--accent);
+        }
+
+        .nav-item.active i {
+            color: var(--accent);
+        }
+
+        .nav-item i {
+            width: 20px;
             text-align: center;
-            border-bottom: 3px solid #00d4ff;
+            font-size: 0.95em;
+            color: var(--text-muted);
+            transition: color var(--transition);
+        }
+
+        .nav-item:hover i {
+            color: var(--text-secondary);
+        }
+
+        .nav-item .badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: 0.7em;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.72em;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            height: 64px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 30px rgba(0, 212, 255, 0.3);
         }
 
-        .header h1 {
-            font-size: 2.5em;
-            background: linear-gradient(90deg, #00d4ff, #00ff88, #00d4ff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 3s linear infinite;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .header h1 .icon {
-            -webkit-text-fill-color: #00d4ff;
-            font-size: 1.1em;
-        }
-
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-
-        .header p {
-            color: #88a0b8;
-            margin-top: 5px;
-            font-size: 0.95em;
-        }
-
-        /* NAV TABS */
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 15px 20px;
-            background: #0f0f23;
-            flex-wrap: wrap;
-            border-bottom: 1px solid #1a1a3e;
-        }
-
-        .nav-tabs button {
-            padding: 12px 25px;
-            border: 2px solid #1a1a3e;
-            background: #12122a;
-            color: #88a0b8;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 0.95em;
-            font-weight: 600;
-            transition: all 0.3s ease;
+        .topbar-left {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 16px;
         }
 
-        .nav-tabs button:hover {
-            border-color: #00d4ff;
-            color: #00d4ff;
-            transform: translateY(-2px);
+        .topbar-left h1 {
+            font-size: 1.15em;
+            font-weight: 700;
+            letter-spacing: -0.3px;
         }
 
-        .nav-tabs button.active {
-            background: linear-gradient(135deg, #00d4ff20, #00ff8820);
-            border-color: #00d4ff;
-            color: #00d4ff;
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.3em;
+            cursor: pointer;
+            padding: 8px;
         }
 
-        /* MAIN */
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .tab-content {
+        .topbar-date {
+            font-size: 0.82em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .topbar-avatar {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, var(--accent), #8B5CF6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8em;
+            color: #fff;
+        }
+
+        /* PAGE CONTENT */
+        .page-content {
+            padding: 28px;
+        }
+
+        .page-section {
             display: none;
         }
 
-        .tab-content.active {
+        .page-section.active {
             display: block;
-            animation: fadeIn 0.4s ease;
+            animation: pageIn 0.25s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* CARDS */
         .card {
-            background: linear-gradient(145deg, #12122a, #1a1a35);
-            border: 1px solid #1e1e3a;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
         }
 
-        .card-title {
-            font-size: 1.3em;
-            color: #00d4ff;
-            margin-bottom: 20px;
+        .card-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #1e1e3a;
+            justify-content: space-between;
+        }
+
+        .card-header h3 {
+            font-size: 0.95em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        .card + .card {
+            margin-top: 20px;
+        }
+
+        /* STAT CARDS */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: border-color var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-light);
+        }
+
+        .stat-icon-wrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            flex-shrink: 0;
+        }
+
+        .stat-icon-wrap.blue { background: rgba(59,130,246,0.12); color: #3B82F6; }
+        .stat-icon-wrap.green { background: rgba(16,185,129,0.12); color: #10B981; }
+        .stat-icon-wrap.orange { background: rgba(245,158,11,0.12); color: #F59E0B; }
+        .stat-icon-wrap.red { background: rgba(239,68,68,0.12); color: #EF4444; }
+        .stat-icon-wrap.purple { background: rgba(139,92,246,0.12); color: #8B5CF6; }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-info .label {
+            font-size: 0.75em;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .stat-info .value {
+            font-size: 1.5em;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .stat-info .sub {
+            font-size: 0.72em;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
         }
 
         /* FORMS */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 18px;
         }
 
@@ -150,1477 +377,1430 @@
             gap: 6px;
         }
 
-        .form-group label {
-            color: #88a0b8;
-            font-size: 0.85em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 12px 15px;
-            background: #0a0a1a;
-            border: 2px solid #1e1e3a;
-            border-radius: 10px;
-            color: #e0e0e0;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #00d4ff;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
-        }
-
-        .form-group select option {
-            background: #0a0a1a;
-            color: #e0e0e0;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 70px;
-        }
-
-        .form-group.full-width {
+        .form-group.full {
             grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 0.8em;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .form-control {
+            padding: 10px 14px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9em;
+            font-family: inherit;
+            outline: none;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        select.form-control option {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+
+        .form-row-inline {
+            display: flex;
+            gap: 14px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .form-row-inline .form-group {
+            flex: 1;
+            min-width: 160px;
         }
 
         /* BUTTONS */
         .btn {
-            padding: 13px 30px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all var(--transition);
+            white-space: nowrap;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
-            color: #000;
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
         }
-
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.5);
+            background: var(--accent-hover);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #00ff88, #00cc6a);
-            color: #000;
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
         }
-
         .btn-success:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.4);
+            background: #059669;
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #ff4757, #cc2233);
-            color: #fff;
-            padding: 8px 15px;
-            font-size: 0.8em;
+            background: transparent;
+            color: var(--danger);
+            border-color: var(--border);
         }
-
         .btn-danger:hover {
-            transform: translateY(-2px);
+            background: var(--danger-bg);
+            border-color: var(--danger);
         }
 
-        .btn-edit {
-            background: linear-gradient(135deg, #ffa502, #cc8400);
-            color: #000;
-            padding: 8px 15px;
-            font-size: 0.8em;
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border-color: var(--border);
+        }
+        .btn-ghost:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
         }
 
-        .btn-edit:hover {
-            transform: translateY(-2px);
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.78em;
         }
 
         .btn-group {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 22px;
             flex-wrap: wrap;
         }
 
-        /* STATS GRID */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: linear-gradient(145deg, #12122a, #1a1a35);
-            border: 1px solid #1e1e3a;
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-        }
-
-        .stat-card.blue::before { background: linear-gradient(90deg, #00d4ff, #0099cc); }
-        .stat-card.green::before { background: linear-gradient(90deg, #00ff88, #00cc6a); }
-        .stat-card.orange::before { background: linear-gradient(90deg, #ffa502, #ff7b00); }
-        .stat-card.red::before { background: linear-gradient(90deg, #ff4757, #ff6b7a); }
-        .stat-card.purple::before { background: linear-gradient(90deg, #a855f7, #7c3aed); }
-
-        .stat-card .stat-icon {
-            font-size: 2em;
-            margin-bottom: 8px;
-        }
-
-        .stat-card .stat-label {
-            color: #88a0b8;
-            font-size: 0.8em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .stat-card .stat-value {
-            font-size: 1.8em;
-            font-weight: 800;
-        }
-
-        .stat-card.blue .stat-value { color: #00d4ff; }
-        .stat-card.green .stat-value { color: #00ff88; }
-        .stat-card.orange .stat-value { color: #ffa502; }
-        .stat-card.red .stat-value { color: #ff4757; }
-        .stat-card.purple .stat-value { color: #a855f7; }
-
         /* TABLE */
-        .table-container {
+        .table-wrap {
             overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid #1e1e3a;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9em;
-        }
-
-        thead {
-            background: linear-gradient(135deg, #1a1a35, #12122a);
         }
 
         th {
-            padding: 15px 12px;
             text-align: left;
-            color: #00d4ff;
+            padding: 12px 16px;
+            font-size: 0.72em;
             font-weight: 700;
+            color: var(--text-muted);
             text-transform: uppercase;
-            font-size: 0.78em;
-            letter-spacing: 1px;
-            border-bottom: 2px solid #00d4ff30;
+            letter-spacing: 0.8px;
+            border-bottom: 1px solid var(--border);
             white-space: nowrap;
+            background: var(--bg-secondary);
         }
 
         td {
-            padding: 12px;
-            border-bottom: 1px solid #1e1e3a;
-            color: #c0c0d0;
+            padding: 14px 16px;
+            font-size: 0.87em;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            vertical-align: middle;
         }
 
-        tr:hover {
-            background: #1a1a3520;
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .td-client {
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
-        tr:last-child td {
-            border-bottom: none;
+        .td-phone {
+            font-size: 0.78em;
+            color: var(--text-muted);
         }
 
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 700;
-            text-transform: uppercase;
+        .td-money { font-weight: 600; font-variant-numeric: tabular-nums; }
+        .td-profit-up { color: var(--success); }
+        .td-profit-down { color: var(--danger); }
+
+        /* BADGES */
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-status.pending {
+            background: var(--warning-bg);
+            color: var(--warning);
+        }
+        .badge-status.complete {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+        .badge-status.delivered {
+            background: rgba(59,130,246,0.1);
+            color: var(--accent);
+        }
+
+        .badge-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
             display: inline-block;
         }
 
-        .status-pendiente {
-            background: #ffa50220;
-            color: #ffa502;
-            border: 1px solid #ffa50250;
-        }
-
-        .status-completada {
-            background: #00ff8820;
-            color: #00ff88;
-            border: 1px solid #00ff8850;
-        }
-
-        .status-entregada {
-            background: #00d4ff20;
-            color: #00d4ff;
-            border: 1px solid #00d4ff50;
-        }
-
-        .profit-positive {
-            color: #00ff88;
-            font-weight: 700;
-        }
-
-        .profit-negative {
-            color: #ff4757;
-            font-weight: 700;
-        }
+        .badge-status.pending .dot { background: var(--warning); }
+        .badge-status.complete .dot { background: var(--success); }
+        .badge-status.delivered .dot { background: var(--accent); }
 
         .actions-cell {
             display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.82em;
+            transition: all var(--transition);
+        }
+
+        .btn-icon:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+            border-color: var(--border-light);
+        }
+
+        .btn-icon.danger:hover {
+            background: var(--danger-bg);
+            color: var(--danger);
+            border-color: var(--danger);
         }
 
         /* FILTERS */
-        .filters-bar {
+        .filters-row {
             display: flex;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             flex-wrap: wrap;
             align-items: flex-end;
         }
 
-        .filters-bar .form-group {
+        .search-wrap {
+            position: relative;
             flex: 1;
-            min-width: 180px;
+            min-width: 220px;
         }
 
-        /* PERIOD SELECTOR */
-        .period-selector {
+        .search-wrap i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.85em;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            padding-left: 36px;
+        }
+
+        /* PERIOD TABS */
+        .period-tabs {
             display: flex;
-            gap: 10px;
+            gap: 4px;
+            background: var(--bg-input);
+            border-radius: 8px;
+            padding: 4px;
+            border: 1px solid var(--border);
             margin-bottom: 20px;
-            flex-wrap: wrap;
+            width: fit-content;
         }
 
-        .period-btn {
-            padding: 10px 22px;
-            border: 2px solid #1e1e3a;
-            background: #12122a;
-            color: #88a0b8;
-            border-radius: 10px;
-            cursor: pointer;
+        .period-tab {
+            padding: 8px 18px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.82em;
             font-weight: 600;
-            transition: all 0.3s ease;
+            font-family: inherit;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all var(--transition);
         }
 
-        .period-btn:hover,
-        .period-btn.active {
-            border-color: #00d4ff;
-            color: #00d4ff;
-            background: #00d4ff10;
+        .period-tab:hover { color: var(--text-secondary); }
+
+        .period-tab.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.3);
         }
 
-        /* CHART BAR SIMPLE */
-        .chart-container {
-            margin-top: 15px;
+        /* CHART BARS */
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .chart-bar-row {
+        .bar-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
+            gap: 14px;
         }
 
-        .chart-bar-label {
-            width: 100px;
-            font-size: 0.82em;
-            color: #88a0b8;
+        .bar-label {
+            width: 80px;
+            font-size: 0.78em;
+            color: var(--text-muted);
+            text-align: right;
+            flex-shrink: 0;
+            font-weight: 500;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 28px;
+            background: var(--bg-input);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-size: 0.75em;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .bar-fill.profit-bar { background: linear-gradient(90deg, #10B981, #059669); }
+        .bar-fill.income-bar { background: linear-gradient(90deg, #3B82F6, #2563EB); }
+        .bar-fill.type-bar { background: linear-gradient(90deg, #8B5CF6, #6D28D9); }
+
+        .bar-value {
+            width: 90px;
+            font-size: 0.8em;
+            font-weight: 700;
+            color: var(--text-secondary);
             text-align: right;
             flex-shrink: 0;
         }
 
-        .chart-bar-track {
-            flex: 1;
-            height: 30px;
-            background: #0a0a1a;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .chart-bar-fill {
-            height: 100%;
-            border-radius: 8px;
-            transition: width 0.8s ease;
-            display: flex;
-            align-items: center;
-            padding-left: 10px;
-            font-size: 0.8em;
-            font-weight: 700;
-            color: #000;
-            min-width: fit-content;
-        }
-
-        .chart-bar-fill.income {
-            background: linear-gradient(90deg, #00d4ff, #00ff88);
-        }
-
-        .chart-bar-fill.cost {
-            background: linear-gradient(90deg, #ff4757, #ff6b7a);
-        }
-
-        .chart-bar-fill.profit {
-            background: linear-gradient(90deg, #00ff88, #00cc6a);
-        }
-
-        /* SUMMARY BOXES */
-        .summary-row {
+        /* SUMMARY */
+        .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
+            gap: 16px;
         }
 
-        .summary-box {
-            background: linear-gradient(145deg, #12122a, #1a1a35);
-            border: 1px solid #1e1e3a;
-            border-radius: 16px;
-            padding: 20px;
-        }
-
-        .summary-box h3 {
-            color: #00d4ff;
-            margin-bottom: 15px;
-            font-size: 1.1em;
+        .summary-list {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            flex-direction: column;
         }
 
-        .summary-item {
+        .summary-row-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #1e1e3a10;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.88em;
         }
 
-        .summary-item:last-child {
-            border-bottom: none;
+        .summary-row-item:last-child { border-bottom: none; }
+
+        .summary-row-item .sr-label {
+            color: var(--text-secondary);
+        }
+
+        .summary-row-item .sr-value {
+            font-weight: 700;
+        }
+
+        .summary-row-item.total-row {
+            border-top: 2px solid var(--border-light);
+            margin-top: 8px;
+            padding-top: 14px;
+        }
+
+        .summary-row-item.total-row .sr-label {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 3em;
+            color: var(--border-light);
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+            font-size: 0.92em;
         }
 
         /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.open { display: flex; }
 
         .modal {
-            background: #12122a;
-            border: 1px solid #1e1e3a;
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 600px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
             width: 100%;
+            max-width: 580px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow-lg);
         }
 
-        .modal-header {
+        .modal-head {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #1e1e3a;
+            justify-content: space-between;
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .modal-header h2 {
-            color: #00d4ff;
-            font-size: 1.3em;
+        .modal-head h3 {
+            font-size: 1em;
+            font-weight: 700;
         }
 
         .modal-close {
-            background: none;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
             border: none;
-            color: #88a0b8;
-            font-size: 1.5em;
+            background: transparent;
+            color: var(--text-muted);
             cursor: pointer;
-            padding: 5px;
-            transition: color 0.3s;
+            font-size: 1.2em;
+            transition: all var(--transition);
         }
 
         .modal-close:hover {
-            color: #ff4757;
+            background: var(--danger-bg);
+            color: var(--danger);
         }
 
-        /* EMPTY STATE */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #88a0b8;
-        }
-
-        .empty-state .icon {
-            font-size: 4em;
-            margin-bottom: 15px;
-        }
-
-        .empty-state p {
-            font-size: 1.1em;
-        }
-
-        /* SEARCH */
-        .search-box {
-            position: relative;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 12px 15px 12px 42px;
-            background: #0a0a1a;
-            border: 2px solid #1e1e3a;
-            border-radius: 10px;
-            color: #e0e0e0;
-            font-size: 1em;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .search-box input:focus {
-            border-color: #00d4ff;
-        }
-
-        .search-box .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #88a0b8;
-        }
+        .modal-body { padding: 22px; }
 
         /* TOAST */
-        .toast {
+        .toast-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, #00ff88, #00cc6a);
-            color: #000;
-            padding: 15px 25px;
-            border-radius: 12px;
-            font-weight: 700;
-            z-index: 2000;
-            transform: translateX(200%);
-            transition: transform 0.4s ease;
-            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.3);
+            bottom: 24px;
+            right: 24px;
+            z-index: 5000;
         }
 
-        .toast.show {
-            transform: translateX(0);
+        .toast-msg {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--success);
+            border-radius: 8px;
+            padding: 14px 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-lg);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
         }
 
-        .toast.error {
-            background: linear-gradient(135deg, #ff4757, #cc2233);
-            color: #fff;
+        .toast-msg.show { transform: translateX(0); }
+        .toast-msg.error { border-left-color: var(--danger); }
+
+        /* MOBILE OVERLAY */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 150;
         }
+        .sidebar-overlay.show { display: block; }
 
         /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .mobile-toggle {
+                display: flex;
+            }
+        }
+
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.6em;
-            }
-
-            .nav-tabs button {
-                padding: 10px 16px;
-                font-size: 0.82em;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .stat-card .stat-value {
-                font-size: 1.3em;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .main-container {
-                padding: 12px;
-            }
-
-            th, td {
-                padding: 8px 6px;
-                font-size: 0.78em;
-            }
-
-            .chart-bar-label {
-                width: 70px;
-                font-size: 0.72em;
-            }
+            .page-content { padding: 16px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .stat-card { padding: 14px; }
+            .stat-info .value { font-size: 1.2em; }
+            .form-grid { grid-template-columns: 1fr; }
+            .topbar { padding: 0 16px; }
+            .card-body { padding: 16px; }
+            .card-header { padding: 14px 16px; }
+            .summary-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
-            .stat-card {
-                padding: 12px;
-            }
-
-            .stat-card .stat-value {
-                font-size: 1.1em;
-            }
-
-            .nav-tabs {
-                gap: 5px;
-                padding: 10px;
-            }
-
-            .nav-tabs button {
-                padding: 8px 12px;
-                font-size: 0.75em;
-            }
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-card { flex-direction: column; gap: 8px; padding: 12px; }
+            .stat-icon-wrap { width: 36px; height: 36px; font-size: 0.9em; }
+            .stat-info .value { font-size: 1.1em; }
+            .period-tabs { width: 100%; }
+            .period-tab { flex: 1; text-align: center; padding: 8px 8px; font-size: 0.75em; }
+            .bar-label { width: 55px; font-size: 0.68em; }
         }
 
-        /* Print */
         @media print {
-            .header, .nav-tabs, .btn, .filters-bar, .actions-cell {
-                display: none !important;
-            }
-            body {
-                background: #fff;
-                color: #000;
-            }
-            .card, .stat-card {
-                background: #fff;
-                border: 1px solid #ccc;
-                color: #000;
-            }
+            .sidebar, .topbar, .btn, .actions-cell, .filters-row, .mobile-toggle, .sidebar-overlay { display: none !important; }
+            .main-content { margin-left: 0; }
+            body { background: #fff; color: #000; }
+            .card, .stat-card { background: #fff; border: 1px solid #ddd; color: #000; box-shadow: none; }
+            td, th { color: #000; }
+            .stat-info .value { color: #000; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1><span class="icon">📱</span> Dr Cell</h1>
-        <p>💼 Sistema de Control de Reparaciones</p>
+    <!-- SIDEBAR OVERLAY MOBILE -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <div class="layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo"><i class="fas fa-mobile-screen-button"></i></div>
+                <div class="brand-text">
+                    <h2>Dr Cell</h2>
+                    <span>Gestión de Reparaciones</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Principal</div>
+                <button class="nav-item active" onclick="goTo('dashboard', this)">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </button>
+                <button class="nav-item" onclick="goTo('nueva', this)">
+                    <i class="fas fa-plus-circle"></i> Nueva Reparación
+                </button>
+                <button class="nav-item" onclick="goTo('listado', this)">
+                    <i class="fas fa-list-check"></i> Reparaciones
+                    <span class="badge" id="pendingBadge" style="display:none;">0</span>
+                </button>
+
+                <div class="nav-section-title">Finanzas</div>
+                <button class="nav-item" onclick="goTo('reportes', this)">
+                    <i class="fas fa-file-invoice-dollar"></i> Reportes
+                </button>
+
+                <div class="nav-section-title">Sistema</div>
+                <button class="nav-item" onclick="goTo('ajustes', this)">
+                    <i class="fas fa-gear"></i> Ajustes
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                Dr Cell &copy; 2024
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="topbar-right">
+                    <span class="topbar-date" id="topDate"></span>
+                    <div class="topbar-avatar">DC</div>
+                </div>
+            </div>
+
+            <div class="page-content">
+
+                <!-- ===== DASHBOARD ===== -->
+                <section id="sec-dashboard" class="page-section active">
+                    <div class="stats-row" id="dashStats"></div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-coins"></i> Ganancias por Período</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="period-tabs" id="periodTabs">
+                                <button class="period-tab active" onclick="setPeriod('hoy',this)">Hoy</button>
+                                <button class="period-tab" onclick="setPeriod('semana',this)">Semana</button>
+                                <button class="period-tab" onclick="setPeriod('mes',this)">Mes</button>
+                                <button class="period-tab" onclick="setPeriod('todo',this)">Todo</button>
+                            </div>
+                            <div class="stats-row" id="periodStats"></div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;margin-top:20px;">
+                        <div class="card">
+                            <div class="card-header"><h3><i class="fas fa-chart-bar"></i> Últimos 7 Días</h3></div>
+                            <div class="card-body">
+                                <div class="bar-chart" id="weekChart"></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header"><h3><i class="fas fa-wrench"></i> Tipos de Reparación</h3></div>
+                            <div class="card-body">
+                                <div class="bar-chart" id="typeChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== NUEVA REPARACIÓN ===== -->
+                <section id="sec-nueva" class="page-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-screwdriver-wrench"></i> Registrar Reparación</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="repairForm" onsubmit="saveRepair(event)">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label">Fecha</label>
+                                        <input type="date" class="form-control" id="f_fecha" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Cliente</label>
+                                        <input type="text" class="form-control" id="f_cliente" placeholder="Nombre completo" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Teléfono</label>
+                                        <input type="tel" class="form-control" id="f_tel" placeholder="Contacto">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Marca / Modelo</label>
+                                        <input type="text" class="form-control" id="f_modelo" placeholder="Ej: iPhone 14 Pro" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Tipo de Reparación</label>
+                                        <select class="form-control" id="f_tipo">
+                                            <option value="Pantalla">Cambio de Pantalla</option>
+                                            <option value="Batería">Cambio de Batería</option>
+                                            <option value="Puerto de carga">Puerto de Carga</option>
+                                            <option value="Software">Software / Sistema</option>
+                                            <option value="Cámara">Cámara</option>
+                                            <option value="Altavoz">Altavoz / Micrófono</option>
+                                            <option value="Botones">Botones</option>
+                                            <option value="Placa">Placa / Motherboard</option>
+                                            <option value="Daño por agua">Daño por Agua</option>
+                                            <option value="Desbloqueo">Desbloqueo</option>
+                                            <option value="Otro">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Estado</label>
+                                        <select class="form-control" id="f_estado">
+                                            <option value="Pendiente">Pendiente</option>
+                                            <option value="Completada">Completada</option>
+                                            <option value="Entregada">Entregada</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Costo de piezas / material</label>
+                                        <input type="number" class="form-control" id="f_costo" step="0.01" min="0" placeholder="0.00" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Precio cobrado al cliente</label>
+                                        <input type="number" class="form-control" id="f_cobro" step="0.01" min="0" placeholder="0.00" required>
+                                    </div>
+                                    <div class="form-group full">
+                                        <label class="form-label">Notas adicionales</label>
+                                        <textarea class="form-control" id="f_notas" placeholder="Descripción del problema, observaciones..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                                    <button type="reset" class="btn btn-ghost"><i class="fas fa-eraser"></i> Limpiar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== LISTADO ===== -->
+                <section id="sec-listado" class="page-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-rectangle-list"></i> Todas las Reparaciones</h3>
+                            <button class="btn btn-primary btn-sm" onclick="goTo('nueva',document.querySelectorAll('.nav-item')[1])"><i class="fas fa-plus"></i> Nueva</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="filters-row">
+                                <div class="search-wrap">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" class="form-control" id="searchInput" placeholder="Buscar por cliente o modelo..." oninput="renderTable()">
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" id="filterEstado" onchange="renderTable()">
+                                        <option value="">Todos los estados</option>
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Completada">Completada</option>
+                                        <option value="Entregada">Entregada</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="date" class="form-control" id="filterDesde" onchange="renderTable()" title="Desde">
+                                </div>
+                                <div class="form-group">
+                                    <input type="date" class="form-control" id="filterHasta" onchange="renderTable()" title="Hasta">
+                                </div>
+                            </div>
+
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Cliente</th>
+                                            <th>Dispositivo</th>
+                                            <th>Reparación</th>
+                                            <th>Costo</th>
+                                            <th>Cobro</th>
+                                            <th>Ganancia</th>
+                                            <th>Estado</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody"></tbody>
+                                </table>
+                            </div>
+                            <div id="emptyTable" class="empty-state" style="display:none;">
+                                <i class="fas fa-inbox"></i>
+                                <p>No se encontraron reparaciones</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== REPORTES ===== -->
+                <section id="sec-reportes" class="page-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-file-invoice-dollar"></i> Reporte Financiero</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row-inline" style="margin-bottom:20px;">
+                                <div class="form-group">
+                                    <label class="form-label">Período</label>
+                                    <select class="form-control" id="reportPeriod" onchange="genReport()">
+                                        <option value="hoy">Hoy</option>
+                                        <option value="semana">Esta semana</option>
+                                        <option value="mes" selected>Este mes</option>
+                                        <option value="todo">Todo</option>
+                                        <option value="custom">Personalizado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="rpFromWrap" style="display:none;">
+                                    <label class="form-label">Desde</label>
+                                    <input type="date" class="form-control" id="rpFrom" onchange="genReport()">
+                                </div>
+                                <div class="form-group" id="rpToWrap" style="display:none;">
+                                    <label class="form-label">Hasta</label>
+                                    <input type="date" class="form-control" id="rpTo" onchange="genReport()">
+                                </div>
+                            </div>
+
+                            <div class="summary-grid" id="reportContent"></div>
+
+                            <div class="btn-group" style="margin-top:24px;">
+                                <button class="btn btn-ghost" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
+                                <button class="btn btn-success" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== AJUSTES ===== -->
+                <section id="sec-ajustes" class="page-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-gear"></i> Configuración</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-grid" style="max-width:400px;">
+                                <div class="form-group">
+                                    <label class="form-label">Moneda</label>
+                                    <select class="form-control" id="currencySelect" onchange="saveCurrency()">
+                                        <option value="$">$ Dólar / Peso</option>
+                                        <option value="€">€ Euro</option>
+                                        <option value="Q">Q Quetzal</option>
+                                        <option value="L">L Lempira</option>
+                                        <option value="C$">C$ Córdoba</option>
+                                        <option value="₡">₡ Colón</option>
+                                        <option value="S/">S/ Sol</option>
+                                        <option value="Bs">Bs Bolívar</option>
+                                        <option value="RD$">RD$ Peso Dom.</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:32px;">
+                                <h3 style="font-size:0.95em;font-weight:700;margin-bottom:14px;color:var(--text-secondary);">Datos</h3>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i> Exportar Backup</button>
+                                    <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Importar</button>
+                                    <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+                                    <button class="btn btn-danger" onclick="clearAll()"><i class="fas fa-trash-can"></i> Borrar Todo</button>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:28px;padding:16px;background:var(--bg-input);border-radius:8px;border:1px solid var(--border);">
+                                <p style="font-size:0.82em;color:var(--text-muted);line-height:1.6;">
+                                    <i class="fas fa-circle-info" style="color:var(--accent);"></i>&nbsp;
+                                    Los datos se almacenan localmente en tu navegador. Realiza backups periódicos para no perder información.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
     </div>
 
-    <!-- NAV -->
-    <div class="nav-tabs">
-        <button class="active" onclick="showTab('nueva')">➕ Nueva</button>
-        <button onclick="showTab('listado')">📋 Listado</button>
-        <button onclick="showTab('dashboard')">📊 Dashboard</button>
-        <button onclick="showTab('reportes')">💰 Reportes</button>
-        <button onclick="showTab('ajustes')">⚙️ Ajustes</button>
-    </div>
-
-    <div class="main-container">
-
-        <!-- TAB: NUEVA REPARACIÓN -->
-        <div id="tab-nueva" class="tab-content active">
-            <div class="card">
-                <div class="card-title">📱 Registrar Nueva Reparación</div>
-                <form id="repairForm" onsubmit="saveRepair(event)">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>📅 Fecha</label>
-                            <input type="date" id="fecha" required>
-                        </div>
-                        <div class="form-group">
-                            <label>👤 Cliente</label>
-                            <input type="text" id="cliente" placeholder="Nombre del cliente" required>
-                        </div>
-                        <div class="form-group">
-                            <label>📞 Teléfono Cliente</label>
-                            <input type="tel" id="telCliente" placeholder="Número de contacto">
-                        </div>
-                        <div class="form-group">
-                            <label>📱 Marca / Modelo</label>
-                            <input type="text" id="modelo" placeholder="Ej: iPhone 13, Samsung S22" required>
-                        </div>
-                        <div class="form-group">
-                            <label>🔧 Tipo de Reparación</label>
-                            <select id="tipoRep">
-                                <option value="Pantalla">🖥️ Cambio de Pantalla</option>
-                                <option value="Batería">🔋 Cambio de Batería</option>
-                                <option value="Puerto de carga">🔌 Puerto de Carga</option>
-                                <option value="Software">💻 Software / Sistema</option>
-                                <option value="Cámara">📷 Cámara</option>
-                                <option value="Altavoz">🔊 Altavoz / Micrófono</option>
-                                <option value="Botones">🔘 Botones</option>
-                                <option value="Placa">🔩 Placa / Motherboard</option>
-                                <option value="Agua">💧 Daño por Agua</option>
-                                <option value="Desbloqueo">🔓 Desbloqueo</option>
-                                <option value="Otro">📋 Otro</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>📌 Estado</label>
-                            <select id="estado">
-                                <option value="Pendiente">⏳ Pendiente</option>
-                                <option value="Completada">✅ Completada</option>
-                                <option value="Entregada">📦 Entregada</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>💸 Costo de Piezas / Material ($)</label>
-                            <input type="number" id="costo" step="0.01" min="0" placeholder="0.00" required>
-                        </div>
-                        <div class="form-group">
-                            <label>💰 Precio Cobrado al Cliente ($)</label>
-                            <input type="number" id="cobro" step="0.01" min="0" placeholder="0.00" required>
-                        </div>
-                        <div class="form-group full-width">
-                            <label>📝 Notas / Detalles</label>
-                            <textarea id="notas" placeholder="Detalles adicionales de la reparación..."></textarea>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-primary">💾 Guardar Reparación</button>
-                        <button type="reset" class="btn btn-danger" style="padding:13px 30px; font-size:1em;">🗑️ Limpiar</button>
-                    </div>
-                    <input type="hidden" id="editId" value="">
-                </form>
-            </div>
-        </div>
-
-        <!-- TAB: LISTADO -->
-        <div id="tab-listado" class="tab-content">
-            <div class="card">
-                <div class="card-title">📋 Historial de Reparaciones</div>
-
-                <div class="filters-bar">
-                    <div class="form-group search-box">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" id="searchInput" placeholder="Buscar cliente, modelo..." oninput="renderTable()">
-                    </div>
-                    <div class="form-group">
-                        <label>Estado</label>
-                        <select id="filterEstado" onchange="renderTable()">
-                            <option value="">Todos</option>
-                            <option value="Pendiente">⏳ Pendiente</option>
-                            <option value="Completada">✅ Completada</option>
-                            <option value="Entregada">📦 Entregada</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Desde</label>
-                        <input type="date" id="filterDesde" onchange="renderTable()">
-                    </div>
-                    <div class="form-group">
-                        <label>Hasta</label>
-                        <input type="date" id="filterHasta" onchange="renderTable()">
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Fecha</th>
-                                <th>Cliente</th>
-                                <th>Modelo</th>
-                                <th>Reparación</th>
-                                <th>Costo</th>
-                                <th>Cobro</th>
-                                <th>Ganancia</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="repairsTableBody">
-                        </tbody>
-                    </table>
-                </div>
-                <div id="tableEmpty" class="empty-state" style="display:none;">
-                    <div class="icon">📱</div>
-                    <p>No hay reparaciones registradas aún</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB: DASHBOARD -->
-        <div id="tab-dashboard" class="tab-content">
-            <!-- Stats rápidas -->
-            <div class="stats-grid" id="dashStats">
-            </div>
-
-            <!-- Ganancias por período -->
-            <div class="card">
-                <div class="card-title">💰 Resumen de Ganancias</div>
-                <div class="period-selector">
-                    <button class="period-btn active" onclick="changePeriod('hoy', this)">📅 Hoy</button>
-                    <button class="period-btn" onclick="changePeriod('semana', this)">📆 Esta Semana</button>
-                    <button class="period-btn" onclick="changePeriod('mes', this)">🗓️ Este Mes</button>
-                    <button class="period-btn" onclick="changePeriod('todo', this)">📊 Todo</button>
-                </div>
-                <div class="stats-grid" id="periodStats">
-                </div>
-            </div>
-
-            <!-- Gráfico barras -->
-            <div class="card">
-                <div class="card-title">📊 Ganancias Últimos 7 Días</div>
-                <div class="chart-container" id="weekChart">
-                </div>
-            </div>
-
-            <!-- Reparaciones más comunes -->
-            <div class="card">
-                <div class="card-title">🔧 Reparaciones Más Comunes</div>
-                <div class="chart-container" id="typeChart">
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB: REPORTES -->
-        <div id="tab-reportes" class="tab-content">
-            <div class="card">
-                <div class="card-title">💰 Reporte Detallado</div>
-
-                <div class="filters-bar">
-                    <div class="form-group">
-                        <label>Período</label>
-                        <select id="reportPeriod" onchange="generateReport()">
-                            <option value="hoy">Hoy</option>
-                            <option value="semana">Esta Semana</option>
-                            <option value="mes" selected>Este Mes</option>
-                            <option value="todo">Todo el Historial</option>
-                            <option value="custom">Personalizado</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="customFromGroup" style="display:none;">
-                        <label>Desde</label>
-                        <input type="date" id="reportFrom" onchange="generateReport()">
-                    </div>
-                    <div class="form-group" id="customToGroup" style="display:none;">
-                        <label>Hasta</label>
-                        <input type="date" id="reportTo" onchange="generateReport()">
-                    </div>
-                </div>
-
-                <div class="summary-row" id="reportContent">
-                </div>
-
-                <div class="btn-group" style="margin-top:20px;">
-                    <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir Reporte</button>
-                    <button class="btn btn-success" onclick="exportCSV()">📥 Exportar CSV</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB: AJUSTES -->
-        <div id="tab-ajustes" class="tab-content">
-            <div class="card">
-                <div class="card-title">⚙️ Configuración y Datos</div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>💲 Símbolo de Moneda</label>
-                        <select id="currencySymbol" onchange="saveCurrency()">
-                            <option value="$">$ (Dólar / Peso)</option>
-                            <option value="€">€ (Euro)</option>
-                            <option value="Q">Q (Quetzal)</option>
-                            <option value="L">L (Lempira)</option>
-                            <option value="C$">C$ (Córdoba)</option>
-                            <option value="₡">₡ (Colón)</option>
-                            <option value="S/">S/ (Sol)</option>
-                            <option value="Bs">Bs (Bolívar)</option>
-                            <option value="RD$">RD$ (Peso Dom.)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="btn-group" style="margin-top:30px;">
-                    <button class="btn btn-primary" onclick="exportData()">📤 Exportar Datos (Backup)</button>
-                    <button class="btn btn-success" onclick="document.getElementById('importFile').click()">📥 Importar Datos</button>
-                    <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
-                    <button class="btn btn-danger" style="padding:13px 30px;font-size:1em;" onclick="clearAllData()">🗑️ Borrar Todo</button>
-                </div>
-
-                <div style="margin-top:30px; padding:20px; background:#0a0a1a; border-radius:12px; border:1px solid #1e1e3a;">
-                    <p style="color:#88a0b8; font-size:0.9em;">
-                        📌 <strong>Nota:</strong> Todos los datos se guardan en el navegador (localStorage). 
-                        Es recomendable hacer backup periódicamente usando el botón "Exportar Datos".
-                    </p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- MODAL EDITAR -->
+    <!-- MODAL -->
     <div class="modal-overlay" id="editModal">
         <div class="modal">
-            <div class="modal-header">
-                <h2>✏️ Editar Reparación</h2>
+            <div class="modal-head">
+                <h3>Editar Reparación</h3>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
-            <form id="editForm" onsubmit="updateRepair(event)">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>📅 Fecha</label>
-                        <input type="date" id="editFecha" required>
+            <div class="modal-body">
+                <form id="editForm" onsubmit="updateRepair(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Fecha</label>
+                            <input type="date" class="form-control" id="e_fecha" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cliente</label>
+                            <input type="text" class="form-control" id="e_cliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="e_tel">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="e_modelo" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tipo</label>
+                            <select class="form-control" id="e_tipo">
+                                <option value="Pantalla">Cambio de Pantalla</option>
+                                <option value="Batería">Cambio de Batería</option>
+                                <option value="Puerto de carga">Puerto de Carga</option>
+                                <option value="Software">Software</option>
+                                <option value="Cámara">Cámara</option>
+                                <option value="Altavoz">Altavoz / Micrófono</option>
+                                <option value="Botones">Botones</option>
+                                <option value="Placa">Placa</option>
+                                <option value="Daño por agua">Daño por Agua</option>
+                                <option value="Desbloqueo">Desbloqueo</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estado</label>
+                            <select class="form-control" id="e_estado">
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Completada">Completada</option>
+                                <option value="Entregada">Entregada</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Costo</label>
+                            <input type="number" class="form-control" id="e_costo" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cobro</label>
+                            <input type="number" class="form-control" id="e_cobro" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label">Notas</label>
+                            <textarea class="form-control" id="e_notas"></textarea>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>👤 Cliente</label>
-                        <input type="text" id="editCliente" required>
+                    <input type="hidden" id="e_id">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Guardar Cambios</button>
+                        <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
                     </div>
-                    <div class="form-group">
-                        <label>📞 Teléfono</label>
-                        <input type="tel" id="editTel">
-                    </div>
-                    <div class="form-group">
-                        <label>📱 Modelo</label>
-                        <input type="text" id="editModelo" required>
-                    </div>
-                    <div class="form-group">
-                        <label>🔧 Tipo</label>
-                        <select id="editTipo">
-                            <option value="Pantalla">Cambio de Pantalla</option>
-                            <option value="Batería">Cambio de Batería</option>
-                            <option value="Puerto de carga">Puerto de Carga</option>
-                            <option value="Software">Software</option>
-                            <option value="Cámara">Cámara</option>
-                            <option value="Altavoz">Altavoz / Micrófono</option>
-                            <option value="Botones">Botones</option>
-                            <option value="Placa">Placa</option>
-                            <option value="Agua">Daño por Agua</option>
-                            <option value="Desbloqueo">Desbloqueo</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>📌 Estado</label>
-                        <select id="editEstado">
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="Completada">Completada</option>
-                            <option value="Entregada">Entregada</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>💸 Costo</label>
-                        <input type="number" id="editCosto" step="0.01" min="0" required>
-                    </div>
-                    <div class="form-group">
-                        <label>💰 Cobro</label>
-                        <input type="number" id="editCobro" step="0.01" min="0" required>
-                    </div>
-                    <div class="form-group full-width">
-                        <label>📝 Notas</label>
-                        <textarea id="editNotas"></textarea>
-                    </div>
-                </div>
-                <input type="hidden" id="editingId">
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-success">✅ Actualizar</button>
-                    <button type="button" class="btn btn-danger" style="padding:13px 30px;font-size:1em;" onclick="closeModal()">Cancelar</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
     <!-- TOAST -->
-    <div class="toast" id="toast"></div>
+    <div class="toast-container" id="toastBox"></div>
 
     <script>
-        // ========== DATA MANAGEMENT ==========
-        let repairs = JSON.parse(localStorage.getItem('drCellRepairs')) || [];
-        let currency = localStorage.getItem('drCellCurrency') || '$';
+        // ============ DATA ============
+        let db = JSON.parse(localStorage.getItem('dc_repairs')) || [];
+        let cur = localStorage.getItem('dc_currency') || '$';
 
-        function saveToStorage() {
-            localStorage.setItem('drCellRepairs', JSON.stringify(repairs));
+        const save = () => localStorage.setItem('dc_repairs', JSON.stringify(db));
+        const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+        const money = (v) => cur + parseFloat(v || 0).toFixed(2);
+        const todayStr = () => new Date().toISOString().split('T')[0];
+        const fmtDate = (d) => { const x = new Date(d + 'T12:00:00'); return x.toLocaleDateString('es', { day:'2-digit', month:'short', year:'numeric' }); };
+
+        // ============ TOAST ============
+        function toast(msg, err = false) {
+            const box = document.getElementById('toastBox');
+            const el = document.createElement('div');
+            el.className = 'toast-msg' + (err ? ' error' : '');
+            el.innerHTML = `<i class="fas ${err ? 'fa-circle-xmark' : 'fa-circle-check'}"></i> ${msg}`;
+            box.appendChild(el);
+            requestAnimationFrame(() => el.classList.add('show'));
+            setTimeout(() => {
+                el.classList.remove('show');
+                setTimeout(() => el.remove(), 300);
+            }, 3000);
         }
 
-        function saveCurrency() {
-            currency = document.getElementById('currencySymbol').value;
-            localStorage.setItem('drCellCurrency', currency);
-            showToast('💲 Moneda actualizada');
+        // ============ NAV ============
+        function goTo(section, btn) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            document.getElementById('sec-' + section).classList.add('active');
+            if (btn) btn.classList.add('active');
+
+            const titles = { dashboard:'Dashboard', nueva:'Nueva Reparación', listado:'Reparaciones', reportes:'Reportes', ajustes:'Ajustes' };
+            document.getElementById('pageTitle').textContent = titles[section] || '';
+
+            if (section === 'dashboard') renderDashboard();
+            if (section === 'listado') renderTable();
+            if (section === 'reportes') genReport();
+            if (section === 'ajustes') document.getElementById('currencySelect').value = cur;
+            if (section === 'nueva') document.getElementById('f_fecha').value = todayStr();
+
+            closeSidebar();
         }
 
-        function loadCurrency() {
-            document.getElementById('currencySymbol').value = currency;
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
         }
 
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
         }
 
-        function formatMoney(amount) {
-            return currency + parseFloat(amount).toFixed(2);
-        }
-
-        // ========== TOAST ==========
-        function showToast(message, isError = false) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast' + (isError ? ' error' : '');
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        // ========== TABS ==========
-        function showTab(name) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + name).classList.add('active');
-            event.target.classList.add('active');
-
-            if (name === 'listado') renderTable();
-            if (name === 'dashboard') renderDashboard();
-            if (name === 'reportes') generateReport();
-            if (name === 'ajustes') loadCurrency();
-        }
-
-        // ========== SAVE REPAIR ==========
+        // ============ SAVE REPAIR ============
         function saveRepair(e) {
             e.preventDefault();
-
-            const repair = {
-                id: generateId(),
-                fecha: document.getElementById('fecha').value,
-                cliente: document.getElementById('cliente').value.trim(),
-                telefono: document.getElementById('telCliente').value.trim(),
-                modelo: document.getElementById('modelo').value.trim(),
-                tipo: document.getElementById('tipoRep').value,
-                estado: document.getElementById('estado').value,
-                costo: parseFloat(document.getElementById('costo').value) || 0,
-                cobro: parseFloat(document.getElementById('cobro').value) || 0,
-                notas: document.getElementById('notas').value.trim(),
-                createdAt: new Date().toISOString()
+            const r = {
+                id: uid(),
+                fecha: document.getElementById('f_fecha').value,
+                cliente: document.getElementById('f_cliente').value.trim(),
+                tel: document.getElementById('f_tel').value.trim(),
+                modelo: document.getElementById('f_modelo').value.trim(),
+                tipo: document.getElementById('f_tipo').value,
+                estado: document.getElementById('f_estado').value,
+                costo: parseFloat(document.getElementById('f_costo').value) || 0,
+                cobro: parseFloat(document.getElementById('f_cobro').value) || 0,
+                notas: document.getElementById('f_notas').value.trim(),
+                ts: Date.now()
             };
-
-            repair.ganancia = repair.cobro - repair.costo;
-
-            repairs.push(repair);
-            saveToStorage();
-
+            db.push(r);
+            save();
             e.target.reset();
-            document.getElementById('fecha').value = getTodayStr();
-            showToast('✅ Reparación guardada correctamente');
+            document.getElementById('f_fecha').value = todayStr();
+            toast('Reparación registrada');
+            updateBadge();
         }
 
-        // ========== EDIT / DELETE ==========
-        function editRepair(id) {
-            const r = repairs.find(x => x.id === id);
+        // ============ EDIT ============
+        function openEdit(id) {
+            const r = db.find(x => x.id === id);
             if (!r) return;
-
-            document.getElementById('editingId').value = r.id;
-            document.getElementById('editFecha').value = r.fecha;
-            document.getElementById('editCliente').value = r.cliente;
-            document.getElementById('editTel').value = r.telefono || '';
-            document.getElementById('editModelo').value = r.modelo;
-            document.getElementById('editTipo').value = r.tipo;
-            document.getElementById('editEstado').value = r.estado;
-            document.getElementById('editCosto').value = r.costo;
-            document.getElementById('editCobro').value = r.cobro;
-            document.getElementById('editNotas').value = r.notas || '';
-
-            document.getElementById('editModal').classList.add('active');
+            document.getElementById('e_id').value = r.id;
+            document.getElementById('e_fecha').value = r.fecha;
+            document.getElementById('e_cliente').value = r.cliente;
+            document.getElementById('e_tel').value = r.tel || '';
+            document.getElementById('e_modelo').value = r.modelo;
+            document.getElementById('e_tipo').value = r.tipo;
+            document.getElementById('e_estado').value = r.estado;
+            document.getElementById('e_costo').value = r.costo;
+            document.getElementById('e_cobro').value = r.cobro;
+            document.getElementById('e_notas').value = r.notas || '';
+            document.getElementById('editModal').classList.add('open');
         }
 
         function updateRepair(e) {
             e.preventDefault();
-            const id = document.getElementById('editingId').value;
-            const idx = repairs.findIndex(x => x.id === id);
-            if (idx === -1) return;
-
-            repairs[idx] = {
-                ...repairs[idx],
-                fecha: document.getElementById('editFecha').value,
-                cliente: document.getElementById('editCliente').value.trim(),
-                telefono: document.getElementById('editTel').value.trim(),
-                modelo: document.getElementById('editModelo').value.trim(),
-                tipo: document.getElementById('editTipo').value,
-                estado: document.getElementById('editEstado').value,
-                costo: parseFloat(document.getElementById('editCosto').value) || 0,
-                cobro: parseFloat(document.getElementById('editCobro').value) || 0,
-                notas: document.getElementById('editNotas').value.trim()
+            const id = document.getElementById('e_id').value;
+            const i = db.findIndex(x => x.id === id);
+            if (i < 0) return;
+            db[i] = { ...db[i],
+                fecha: document.getElementById('e_fecha').value,
+                cliente: document.getElementById('e_cliente').value.trim(),
+                tel: document.getElementById('e_tel').value.trim(),
+                modelo: document.getElementById('e_modelo').value.trim(),
+                tipo: document.getElementById('e_tipo').value,
+                estado: document.getElementById('e_estado').value,
+                costo: parseFloat(document.getElementById('e_costo').value) || 0,
+                cobro: parseFloat(document.getElementById('e_cobro').value) || 0,
+                notas: document.getElementById('e_notas').value.trim()
             };
-            repairs[idx].ganancia = repairs[idx].cobro - repairs[idx].costo;
-
-            saveToStorage();
+            save();
             closeModal();
             renderTable();
-            showToast('✅ Reparación actualizada');
+            toast('Reparación actualizada');
+            updateBadge();
         }
 
         function deleteRepair(id) {
-            if (!confirm('¿Estás seguro de eliminar esta reparación?')) return;
-            repairs = repairs.filter(x => x.id !== id);
-            saveToStorage();
+            if (!confirm('¿Eliminar esta reparación?')) return;
+            db = db.filter(x => x.id !== id);
+            save();
             renderTable();
-            showToast('🗑️ Reparación eliminada');
+            toast('Eliminada');
+            updateBadge();
         }
 
         function closeModal() {
-            document.getElementById('editModal').classList.remove('active');
+            document.getElementById('editModal').classList.remove('open');
         }
 
-        // ========== TABLE RENDER ==========
+        // ============ TABLE ============
         function renderTable() {
-            const search = (document.getElementById('searchInput').value || '').toLowerCase();
-            const estado = document.getElementById('filterEstado').value;
+            const q = (document.getElementById('searchInput').value || '').toLowerCase();
+            const est = document.getElementById('filterEstado').value;
             const desde = document.getElementById('filterDesde').value;
             const hasta = document.getElementById('filterHasta').value;
 
-            let filtered = repairs.filter(r => {
-                if (search && !r.cliente.toLowerCase().includes(search) && !r.modelo.toLowerCase().includes(search) && !(r.tipo || '').toLowerCase().includes(search)) return false;
-                if (estado && r.estado !== estado) return false;
+            let list = db.filter(r => {
+                if (q && !r.cliente.toLowerCase().includes(q) && !r.modelo.toLowerCase().includes(q) && !r.tipo.toLowerCase().includes(q)) return false;
+                if (est && r.estado !== est) return false;
                 if (desde && r.fecha < desde) return false;
                 if (hasta && r.fecha > hasta) return false;
                 return true;
-            });
+            }).sort((a, b) => b.fecha.localeCompare(a.fecha) || (b.ts || 0) - (a.ts || 0));
 
-            filtered.sort((a, b) => b.fecha.localeCompare(a.fecha) || b.createdAt.localeCompare(a.createdAt));
+            const tbody = document.getElementById('tableBody');
+            const empty = document.getElementById('emptyTable');
 
-            const tbody = document.getElementById('repairsTableBody');
-            const emptyState = document.getElementById('tableEmpty');
-
-            if (filtered.length === 0) {
+            if (!list.length) {
                 tbody.innerHTML = '';
-                emptyState.style.display = 'block';
+                empty.style.display = '';
                 return;
             }
+            empty.style.display = 'none';
 
-            emptyState.style.display = 'none';
-
-            tbody.innerHTML = filtered.map((r, i) => {
-                const ganancia = r.cobro - r.costo;
-                const profitClass = ganancia >= 0 ? 'profit-positive' : 'profit-negative';
-                const statusClass = 'status-' + r.estado.toLowerCase();
+            tbody.innerHTML = list.map(r => {
+                const g = r.cobro - r.costo;
+                const cls = g >= 0 ? 'td-profit-up' : 'td-profit-down';
+                const badgeCls = r.estado === 'Pendiente' ? 'pending' : r.estado === 'Completada' ? 'complete' : 'delivered';
 
                 return `<tr>
-                    <td>${i + 1}</td>
-                    <td>${formatDate(r.fecha)}</td>
-                    <td><strong>${r.cliente}</strong>${r.telefono ? '<br><small style="color:#88a0b8">📞 ' + r.telefono + '</small>' : ''}</td>
-                    <td>${r.modelo}</td>
-                    <td>${r.tipo}</td>
-                    <td>${formatMoney(r.costo)}</td>
-                    <td>${formatMoney(r.cobro)}</td>
-                    <td class="${profitClass}">${formatMoney(ganancia)}</td>
-                    <td><span class="status-badge ${statusClass}">${r.estado}</span></td>
+                    <td>${fmtDate(r.fecha)}</td>
+                    <td><span class="td-client">${esc(r.cliente)}</span>${r.tel ? '<br><span class="td-phone">'+esc(r.tel)+'</span>' : ''}</td>
+                    <td>${esc(r.modelo)}</td>
+                    <td>${esc(r.tipo)}</td>
+                    <td class="td-money">${money(r.costo)}</td>
+                    <td class="td-money">${money(r.cobro)}</td>
+                    <td class="td-money ${cls}">${money(g)}</td>
+                    <td><span class="badge-status ${badgeCls}"><span class="dot"></span>${r.estado}</span></td>
                     <td class="actions-cell">
-                        <button class="btn btn-edit" onclick="editRepair('${r.id}')">✏️</button>
-                        <button class="btn btn-danger" onclick="deleteRepair('${r.id}')">🗑️</button>
+                        <button class="btn-icon" onclick="openEdit('${r.id}')" title="Editar"><i class="fas fa-pen"></i></button>
+                        <button class="btn-icon danger" onclick="deleteRepair('${r.id}')" title="Eliminar"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>`;
             }).join('');
         }
 
-        // ========== DASHBOARD ==========
-        function renderDashboard() {
-            const today = getTodayStr();
-            const now = new Date();
+        function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-            // Stats generales
-            const totalRepairs = repairs.length;
-            const pendientes = repairs.filter(r => r.estado === 'Pendiente').length;
-            const totalIngresos = repairs.reduce((s, r) => s + r.cobro, 0);
-            const totalCostos = repairs.reduce((s, r) => s + r.costo, 0);
-            const totalGanancias = totalIngresos - totalCostos;
+        // ============ DASHBOARD ============
+        function renderDashboard() {
+            const total = db.length;
+            const pend = db.filter(r => r.estado === 'Pendiente').length;
+            const ing = db.reduce((s, r) => s + r.cobro, 0);
+            const cos = db.reduce((s, r) => s + r.costo, 0);
+            const gan = ing - cos;
 
             document.getElementById('dashStats').innerHTML = `
-                <div class="stat-card blue">
-                    <div class="stat-icon">📱</div>
-                    <div class="stat-label">Total Reparaciones</div>
-                    <div class="stat-value">${totalRepairs}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap blue"><i class="fas fa-mobile-screen"></i></div>
+                    <div class="stat-info">
+                        <div class="label">Total</div>
+                        <div class="value">${total}</div>
+                        <div class="sub">reparaciones</div>
+                    </div>
                 </div>
-                <div class="stat-card orange">
-                    <div class="stat-icon">⏳</div>
-                    <div class="stat-label">Pendientes</div>
-                    <div class="stat-value">${pendientes}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap orange"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <div class="label">Pendientes</div>
+                        <div class="value">${pend}</div>
+                        <div class="sub">en proceso</div>
+                    </div>
                 </div>
-                <div class="stat-card purple">
-                    <div class="stat-icon">💸</div>
-                    <div class="stat-label">Total Ingresos</div>
-                    <div class="stat-value">${formatMoney(totalIngresos)}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap purple"><i class="fas fa-arrow-trend-up"></i></div>
+                    <div class="stat-info">
+                        <div class="label">Ingresos</div>
+                        <div class="value">${money(ing)}</div>
+                        <div class="sub">total cobrado</div>
+                    </div>
                 </div>
-                <div class="stat-card red">
-                    <div class="stat-icon">📦</div>
-                    <div class="stat-label">Total Costos</div>
-                    <div class="stat-value">${formatMoney(totalCostos)}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap red"><i class="fas fa-arrow-trend-down"></i></div>
+                    <div class="stat-info">
+                        <div class="label">Costos</div>
+                        <div class="value">${money(cos)}</div>
+                        <div class="sub">inversión</div>
+                    </div>
                 </div>
-                <div class="stat-card green">
-                    <div class="stat-icon">💰</div>
-                    <div class="stat-label">Ganancia Neta</div>
-                    <div class="stat-value">${formatMoney(totalGanancias)}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap green"><i class="fas fa-sack-dollar"></i></div>
+                    <div class="stat-info">
+                        <div class="label">Ganancia Neta</div>
+                        <div class="value" style="color:${gan >= 0 ? 'var(--success)' : 'var(--danger)'}">${money(gan)}</div>
+                        <div class="sub">beneficio</div>
+                    </div>
                 </div>
             `;
 
-            // Default period
-            changePeriod('hoy', document.querySelector('.period-btn.active'));
-
-            // Week chart
+            setPeriod('hoy', document.querySelector('.period-tab.active'));
             renderWeekChart();
-
-            // Type chart
             renderTypeChart();
         }
 
-        function changePeriod(period, btn) {
-            document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+        function setPeriod(p, btn) {
+            document.querySelectorAll('.period-tab').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
-            const filtered = getFilteredByPeriod(period);
-            const ingresos = filtered.reduce((s, r) => s + r.cobro, 0);
-            const costos = filtered.reduce((s, r) => s + r.costo, 0);
-            const ganancia = ingresos - costos;
-            const count = filtered.length;
-            const promedio = count > 0 ? ganancia / count : 0;
+            const f = filterPeriod(p);
+            const ing = f.reduce((s, r) => s + r.cobro, 0);
+            const cos = f.reduce((s, r) => s + r.costo, 0);
+            const gan = ing - cos;
+            const cnt = f.length;
+            const avg = cnt ? gan / cnt : 0;
 
             document.getElementById('periodStats').innerHTML = `
-                <div class="stat-card blue">
-                    <div class="stat-icon">📱</div>
-                    <div class="stat-label">Reparaciones</div>
-                    <div class="stat-value">${count}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap blue"><i class="fas fa-hashtag"></i></div>
+                    <div class="stat-info"><div class="label">Reparaciones</div><div class="value">${cnt}</div></div>
                 </div>
-                <div class="stat-card purple">
-                    <div class="stat-icon">💵</div>
-                    <div class="stat-label">Ingresos</div>
-                    <div class="stat-value">${formatMoney(ingresos)}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap purple"><i class="fas fa-hand-holding-dollar"></i></div>
+                    <div class="stat-info"><div class="label">Ingresos</div><div class="value">${money(ing)}</div></div>
                 </div>
-                <div class="stat-card red">
-                    <div class="stat-icon">💸</div>
-                    <div class="stat-label">Costos</div>
-                    <div class="stat-value">${formatMoney(costos)}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap red"><i class="fas fa-receipt"></i></div>
+                    <div class="stat-info"><div class="label">Costos</div><div class="value">${money(cos)}</div></div>
                 </div>
-                <div class="stat-card green">
-                    <div class="stat-icon">💰</div>
-                    <div class="stat-label">Ganancia</div>
-                    <div class="stat-value">${formatMoney(ganancia)}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap green"><i class="fas fa-piggy-bank"></i></div>
+                    <div class="stat-info"><div class="label">Ganancia</div><div class="value" style="color:${gan>=0?'var(--success)':'var(--danger)'}">${money(gan)}</div></div>
                 </div>
-                <div class="stat-card orange">
-                    <div class="stat-icon">📈</div>
-                    <div class="stat-label">Promedio/Rep</div>
-                    <div class="stat-value">${formatMoney(promedio)}</div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrap orange"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-info"><div class="label">Promedio</div><div class="value">${money(avg)}</div></div>
                 </div>
             `;
         }
 
-        function getFilteredByPeriod(period, customFrom, customTo) {
-            const today = new Date();
-            const todayStr = getTodayStr();
-
-            return repairs.filter(r => {
-                if (period === 'hoy') return r.fecha === todayStr;
-                if (period === 'semana') {
-                    const d = new Date(r.fecha + 'T00:00:00');
-                    const startOfWeek = new Date(today);
-                    startOfWeek.setDate(today.getDate() - today.getDay());
-                    startOfWeek.setHours(0, 0, 0, 0);
-                    return d >= startOfWeek && d <= today;
+        function filterPeriod(p, from, to) {
+            const today = new Date(), ts = todayStr();
+            return db.filter(r => {
+                if (p === 'hoy') return r.fecha === ts;
+                if (p === 'semana') {
+                    const d = new Date(r.fecha + 'T12:00:00');
+                    const start = new Date(today);
+                    start.setDate(today.getDate() - today.getDay());
+                    start.setHours(0,0,0,0);
+                    return d >= start && d <= today;
                 }
-                if (period === 'mes') {
-                    return r.fecha.substring(0, 7) === todayStr.substring(0, 7);
-                }
-                if (period === 'custom') {
-                    if (customFrom && r.fecha < customFrom) return false;
-                    if (customTo && r.fecha > customTo) return false;
+                if (p === 'mes') return r.fecha.slice(0,7) === ts.slice(0,7);
+                if (p === 'custom') {
+                    if (from && r.fecha < from) return false;
+                    if (to && r.fecha > to) return false;
                     return true;
                 }
-                return true; // todo
+                return true;
             });
         }
 
         function renderWeekChart() {
-            const container = document.getElementById('weekChart');
+            const el = document.getElementById('weekChart');
             const days = [];
             const today = new Date();
-
             for (let i = 6; i >= 0; i--) {
-                const d = new Date(today);
-                d.setDate(d.getDate() - i);
-                const dateStr = d.toISOString().split('T')[0];
-                const dayRepairs = repairs.filter(r => r.fecha === dateStr);
-                const ganancia = dayRepairs.reduce((s, r) => s + (r.cobro - r.costo), 0);
-                const ingreso = dayRepairs.reduce((s, r) => s + r.cobro, 0);
+                const d = new Date(today); d.setDate(d.getDate() - i);
+                const ds = d.toISOString().split('T')[0];
+                const dr = db.filter(r => r.fecha === ds);
+                const g = dr.reduce((s, r) => s + r.cobro - r.costo, 0);
                 days.push({
-                    label: d.toLocaleDateString('es', { weekday: 'short', day: 'numeric' }),
-                    ganancia,
-                    ingreso,
-                    count: dayRepairs.length
+                    label: d.toLocaleDateString('es', { weekday:'short', day:'numeric' }),
+                    profit: g,
+                    count: dr.length
                 });
             }
-
-            const maxVal = Math.max(...days.map(d => d.ingreso), 1);
-
-            container.innerHTML = days.map(d => `
-                <div class="chart-bar-row">
-                    <div class="chart-bar-label">${d.label} (${d.count})</div>
-                    <div class="chart-bar-track">
-                        <div class="chart-bar-fill profit" style="width: ${(d.ganancia / maxVal * 100)}%">
-                            ${d.ganancia > 0 ? formatMoney(d.ganancia) : ''}
-                        </div>
+            const max = Math.max(...days.map(d => Math.abs(d.profit)), 1);
+            el.innerHTML = days.map(d => `
+                <div class="bar-row">
+                    <span class="bar-label">${d.label}</span>
+                    <div class="bar-track">
+                        <div class="bar-fill profit-bar" style="width:${Math.max((Math.abs(d.profit)/max)*100, d.profit > 0 ? 2 : 0)}%"></div>
                     </div>
+                    <span class="bar-value" style="color:${d.profit >= 0 ? 'var(--success)' : 'var(--danger)'}">${money(d.profit)}</span>
                 </div>
             `).join('');
         }
 
         function renderTypeChart() {
-            const container = document.getElementById('typeChart');
+            const el = document.getElementById('typeChart');
             const types = {};
+            db.forEach(r => { types[r.tipo] = (types[r.tipo] || 0) + 1; });
+            const sorted = Object.entries(types).sort((a,b) => b[1] - a[1]).slice(0, 8);
 
-            repairs.forEach(r => {
-                if (!types[r.tipo]) types[r.tipo] = { count: 0, ganancia: 0 };
-                types[r.tipo].count++;
-                types[r.tipo].ganancia += (r.cobro - r.costo);
-            });
-
-            const sorted = Object.entries(types).sort((a, b) => b[1].count - a[1].count);
-            const maxCount = sorted.length > 0 ? sorted[0][1].count : 1;
-
-            if (sorted.length === 0) {
-                container.innerHTML = '<p style="color:#88a0b8;text-align:center;padding:20px;">Sin datos aún</p>';
+            if (!sorted.length) {
+                el.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:20px;">Sin datos</p>';
                 return;
             }
 
-            container.innerHTML = sorted.map(([tipo, data]) => `
-                <div class="chart-bar-row">
-                    <div class="chart-bar-label">${tipo}</div>
-                    <div class="chart-bar-track">
-                        <div class="chart-bar-fill income" style="width: ${(data.count / maxCount * 100)}%">
-                            ${data.count} rep. | ${formatMoney(data.ganancia)}
-                        </div>
+            const max = sorted[0][1];
+            el.innerHTML = sorted.map(([t, c]) => `
+                <div class="bar-row">
+                    <span class="bar-label">${t}</span>
+                    <div class="bar-track">
+                        <div class="bar-fill type-bar" style="width:${(c/max)*100}%"></div>
                     </div>
+                    <span class="bar-value">${c}</span>
                 </div>
             `).join('');
         }
 
-        // ========== REPORTES ==========
-        function generateReport() {
-            const period = document.getElementById('reportPeriod').value;
-            const customFromGroup = document.getElementById('customFromGroup');
-            const customToGroup = document.getElementById('customToGroup');
+        // ============ REPORTES ============
+        function genReport() {
+            const p = document.getElementById('reportPeriod').value;
+            document.getElementById('rpFromWrap').style.display = p === 'custom' ? '' : 'none';
+            document.getElementById('rpToWrap').style.display = p === 'custom' ? '' : 'none';
 
-            if (period === 'custom') {
-                customFromGroup.style.display = 'flex';
-                customToGroup.style.display = 'flex';
-            } else {
-                customFromGroup.style.display = 'none';
-                customToGroup.style.display = 'none';
-            }
+            const from = document.getElementById('rpFrom').value;
+            const to = document.getElementById('rpTo').value;
+            const f = filterPeriod(p, from, to);
 
-            const customFrom = document.getElementById('reportFrom').value;
-            const customTo = document.getElementById('reportTo').value;
-            const filtered = getFilteredByPeriod(period, customFrom, customTo);
+            const ing = f.reduce((s, r) => s + r.cobro, 0);
+            const cos = f.reduce((s, r) => s + r.costo, 0);
+            const gan = ing - cos;
+            const cnt = f.length;
+            const comp = f.filter(r => r.estado !== 'Pendiente').length;
+            const pend = f.filter(r => r.estado === 'Pendiente').length;
 
-            const ingresos = filtered.reduce((s, r) => s + r.cobro, 0);
-            const costos = filtered.reduce((s, r) => s + r.costo, 0);
-            const ganancia = ingresos - costos;
-            const count = filtered.length;
-            const completadas = filtered.filter(r => r.estado === 'Completada' || r.estado === 'Entregada').length;
-            const pendientes = filtered.filter(r => r.estado === 'Pendiente').length;
-
-            // Top reparaciones
             const types = {};
-            filtered.forEach(r => {
-                if (!types[r.tipo]) types[r.tipo] = 0;
-                types[r.tipo]++;
-            });
-            const topTypes = Object.entries(types).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            f.forEach(r => { types[r.tipo] = (types[r.tipo] || 0) + 1; });
+            const topT = Object.entries(types).sort((a,b) => b[1] - a[1]).slice(0, 5);
 
-            // Top clientes
             const clients = {};
-            filtered.forEach(r => {
-                if (!clients[r.cliente]) clients[r.cliente] = { count: 0, total: 0 };
-                clients[r.cliente].count++;
-                clients[r.cliente].total += r.cobro;
+            f.forEach(r => {
+                if (!clients[r.cliente]) clients[r.cliente] = { n: 0, t: 0 };
+                clients[r.cliente].n++;
+                clients[r.cliente].t += r.cobro;
             });
-            const topClients = Object.entries(clients).sort((a, b) => b[1].total - a[1].total).slice(0, 5);
+            const topC = Object.entries(clients).sort((a,b) => b[1].t - a[1].t).slice(0, 5);
 
-            const periodLabels = {
-                hoy: 'Hoy',
-                semana: 'Esta Semana',
-                mes: 'Este Mes',
-                todo: 'Todo el Historial',
-                custom: 'Período Personalizado'
-            };
+            const labels = { hoy:'Hoy', semana:'Esta Semana', mes:'Este Mes', todo:'Todo', custom:'Personalizado' };
 
             document.getElementById('reportContent').innerHTML = `
-                <div class="summary-box">
-                    <h3>📊 Resumen ${periodLabels[period]}</h3>
-                    <div class="summary-item">
-                        <span>Total Reparaciones</span>
-                        <strong>${count}</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>Completadas / Entregadas</span>
-                        <strong style="color:#00ff88">${completadas}</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>Pendientes</span>
-                        <strong style="color:#ffa502">${pendientes}</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>💵 Total Ingresos</span>
-                        <strong style="color:#00d4ff">${formatMoney(ingresos)}</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>💸 Total Costos</span>
-                        <strong style="color:#ff4757">${formatMoney(costos)}</strong>
-                    </div>
-                    <div class="summary-item" style="border-top:2px solid #00ff8830;padding-top:12px;margin-top:5px;">
-                        <span style="font-size:1.1em;">💰 GANANCIA NETA</span>
-                        <strong style="color:${ganancia >= 0 ? '#00ff88' : '#ff4757'};font-size:1.3em;">${formatMoney(ganancia)}</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>📈 Promedio por Reparación</span>
-                        <strong>${formatMoney(count > 0 ? ganancia / count : 0)}</strong>
+                <div class="card" style="margin:0;">
+                    <div class="card-header"><h3>Resumen — ${labels[p]}</h3></div>
+                    <div class="card-body">
+                        <div class="summary-list">
+                            <div class="summary-row-item"><span class="sr-label">Reparaciones</span><span class="sr-value">${cnt}</span></div>
+                            <div class="summary-row-item"><span class="sr-label">Terminadas</span><span class="sr-value" style="color:var(--success)">${comp}</span></div>
+                            <div class="summary-row-item"><span class="sr-label">Pendientes</span><span class="sr-value" style="color:var(--warning)">${pend}</span></div>
+                            <div class="summary-row-item"><span class="sr-label">Ingresos</span><span class="sr-value">${money(ing)}</span></div>
+                            <div class="summary-row-item"><span class="sr-label">Costos</span><span class="sr-value" style="color:var(--danger)">${money(cos)}</span></div>
+                            <div class="summary-row-item total-row"><span class="sr-label">Ganancia Neta</span><span class="sr-value" style="color:${gan>=0?'var(--success)':'var(--danger)';};font-size:1.15em;">${money(gan)}</span></div>
+                            <div class="summary-row-item"><span class="sr-label">Promedio / rep.</span><span class="sr-value">${money(cnt?gan/cnt:0)}</span></div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="summary-box">
-                    <h3>🔧 Top Reparaciones</h3>
-                    ${topTypes.length > 0 ? topTypes.map(([tipo, cnt]) => `
-                        <div class="summary-item">
-                            <span>${tipo}</span>
-                            <strong>${cnt} reps</strong>
+                <div class="card" style="margin:0;">
+                    <div class="card-header"><h3>Desglose</h3></div>
+                    <div class="card-body">
+                        <h4 style="font-size:0.8em;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Top Reparaciones</h4>
+                        <div class="summary-list">
+                            ${topT.length ? topT.map(([t,c]) => `<div class="summary-row-item"><span class="sr-label">${t}</span><span class="sr-value">${c}</span></div>`).join('') : '<p style="color:var(--text-muted);font-size:.85em;">—</p>'}
                         </div>
-                    `).join('') : '<p style="color:#88a0b8;">Sin datos</p>'}
-
-                    <h3 style="margin-top:20px;">👤 Top Clientes</h3>
-                    ${topClients.length > 0 ? topClients.map(([name, data]) => `
-                        <div class="summary-item">
-                            <span>${name} (${data.count})</span>
-                            <strong>${formatMoney(data.total)}</strong>
+                        <h4 style="font-size:0.8em;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:18px 0 10px;">Top Clientes</h4>
+                        <div class="summary-list">
+                            ${topC.length ? topC.map(([n,d]) => `<div class="summary-row-item"><span class="sr-label">${esc(n)} <small>(${d.n})</small></span><span class="sr-value">${money(d.t)}</span></div>`).join('') : '<p style="color:var(--text-muted);font-size:.85em;">—</p>'}
                         </div>
-                    `).join('') : '<p style="color:#88a0b8;">Sin datos</p>'}
+                    </div>
                 </div>
             `;
         }
 
-        // ========== EXPORT / IMPORT ==========
+        // ============ EXPORT/IMPORT ============
         function exportCSV() {
-            if (repairs.length === 0) {
-                showToast('No hay datos para exportar', true);
-                return;
-            }
-
-            const headers = ['Fecha', 'Cliente', 'Teléfono', 'Modelo', 'Tipo', 'Estado', 'Costo', 'Cobro', 'Ganancia', 'Notas'];
-            const rows = repairs.map(r => [
-                r.fecha, r.cliente, r.telefono || '', r.modelo, r.tipo, r.estado,
-                r.costo, r.cobro, (r.cobro - r.costo), r.notas || ''
-            ]);
-
-            let csv = headers.join(',') + '\n';
-            rows.forEach(row => {
-                csv += row.map(val => `"${val}"`).join(',') + '\n';
-            });
-
-            downloadFile(csv, 'DrCell_Reparaciones.csv', 'text/csv');
-            showToast('📥 CSV exportado correctamente');
+            if (!db.length) return toast('No hay datos', true);
+            const h = ['Fecha','Cliente','Teléfono','Modelo','Tipo','Estado','Costo','Cobro','Ganancia','Notas'];
+            const rows = db.map(r => [r.fecha, r.cliente, r.tel||'', r.modelo, r.tipo, r.estado, r.costo, r.cobro, r.cobro-r.costo, r.notas||'']);
+            let csv = h.join(',') + '\n' + rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+            dl(csv, 'DrCell_Reparaciones.csv', 'text/csv');
+            toast('CSV exportado');
         }
 
         function exportData() {
-            const data = JSON.stringify({ repairs, currency, exportDate: new Date().toISOString() }, null, 2);
-            downloadFile(data, 'DrCell_Backup_' + getTodayStr() + '.json', 'application/json');
-            showToast('📤 Backup exportado correctamente');
+            dl(JSON.stringify({repairs:db, currency:cur, date:new Date().toISOString()}, null, 2), 'DrCell_Backup_'+todayStr()+'.json', 'application/json');
+            toast('Backup descargado');
         }
 
         function importData(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
-            reader.onload = function(ev) {
+            reader.onload = (ev) => {
                 try {
                     const data = JSON.parse(ev.target.result);
                     if (data.repairs && Array.isArray(data.repairs)) {
-                        if (confirm(`Se encontraron ${data.repairs.length} reparaciones. ¿Deseas REEMPLAZAR los datos actuales o AGREGAR?\n\nAceptar = Reemplazar\nCancelar = Agregar`)) {
-                            repairs = data.repairs;
-                        } else {
-                            repairs = [...repairs, ...data.repairs];
-                        }
-                        if (data.currency) {
-                            currency = data.currency;
-                            localStorage.setItem('drCellCurrency', currency);
-                        }
-                        saveToStorage();
-                        showToast('📥 Datos importados: ' + repairs.length + ' reparaciones');
-                    } else {
-                        showToast('❌ Archivo no válido', true);
-                    }
-                } catch (err) {
-                    showToast('❌ Error al leer archivo', true);
-                }
+                        const merge = confirm('¿Reemplazar datos actuales?\n\nAceptar = Reemplazar\nCancelar = Agregar a existentes');
+                        db = merge ? data.repairs : [...db, ...data.repairs];
+                        if (data.currency) { cur = data.currency; localStorage.setItem('dc_currency', cur); }
+                        save();
+                        toast(db.length + ' reparaciones cargadas');
+                        updateBadge();
+                    } else { toast('Archivo no válido', true); }
+                } catch { toast('Error al leer', true); }
                 e.target.value = '';
             };
             reader.readAsText(file);
         }
 
-        function clearAllData() {
-            if (!confirm('⚠️ ¿Estás seguro de borrar TODOS los datos? Esta acción no se puede deshacer.')) return;
-            if (!confirm('⚠️ ÚLTIMA OPORTUNIDAD: ¿Realmente deseas borrar todo?')) return;
-            repairs = [];
-            saveToStorage();
-            showToast('🗑️ Todos los datos han sido borrados');
+        function clearAll() {
+            if (!confirm('¿Borrar TODOS los datos?')) return;
+            if (!confirm('Última confirmación. ¿Continuar?')) return;
+            db = [];
+            save();
+            toast('Datos eliminados');
+            updateBadge();
         }
 
-        function downloadFile(content, filename, type) {
-            const blob = new Blob([content], { type });
-            const url = URL.createObjectURL(blob);
+        function dl(content, name, type) {
             const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
+            a.href = URL.createObjectURL(new Blob([content], { type }));
+            a.download = name;
             a.click();
-            URL.revokeObjectURL(url);
         }
 
-        // ========== HELPERS ==========
-        function getTodayStr() {
-            return new Date().toISOString().split('T')[0];
+        function saveCurrency() {
+            cur = document.getElementById('currencySelect').value;
+            localStorage.setItem('dc_currency', cur);
+            toast('Moneda actualizada');
         }
 
-        function formatDate(dateStr) {
-            const d = new Date(dateStr + 'T00:00:00');
-            return d.toLocaleDateString('es', { day: '2-digit', month: 'short', year: 'numeric' });
+        function updateBadge() {
+            const pend = db.filter(r => r.estado === 'Pendiente').length;
+            const badge = document.getElementById('pendingBadge');
+            if (pend > 0) {
+                badge.textContent = pend;
+                badge.style.display = '';
+            } else {
+                badge.style.display = 'none';
+            }
         }
 
-        // ========== INIT ==========
-        document.getElementById('fecha').value = getTodayStr();
+        // ============ INIT ============
+        document.getElementById('topDate').textContent = new Date().toLocaleDateString('es', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+        document.getElementById('f_fecha').value = todayStr();
+        updateBadge();
+        renderDashboard();
     </script>
 
 </body>
