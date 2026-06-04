@@ -234,7 +234,7 @@
 
     <div class="loading-screen" id="loadingScreen">
         <div class="spinner"></div>
-        <div class="loading-text">Conectando con la base de datos...</div>
+        <div class="loading-text">Cargando datos...</div>
     </div>
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
@@ -268,6 +268,7 @@
                     <h1 id="pageTitle">Dashboard</h1>
                 </div>
                 <div class="topbar-right">
+                    <button class="btn btn-ghost btn-sm" id="btnRefresh" title="Actualizar"><i class="fas fa-rotate"></i></button>
                     <div class="sync-status" id="syncStatus"><span class="dot"></span><span id="syncText">Conectado</span></div>
                     <span class="topbar-date" id="topDate"></span>
                     <div class="topbar-avatar">DC</div>
@@ -422,7 +423,7 @@
                                     <button class="btn btn-primary" id="btnExportBackup"><i class="fas fa-download"></i> Exportar Backup JSON</button>
                                 </div>
                             </div>
-                            <div class="info-box"><p><i class="fas fa-cloud"></i><strong>Sincronización activa:</strong> Tus datos se guardan automáticamente en la nube. Puedes acceder desde cualquier dispositivo abriendo esta misma página.</p></div>
+                            <div class="info-box"><p><i class="fas fa-cloud"></i><strong>Sincronización activa:</strong> Tus datos se guardan en JSONBin. Puedes acceder desde cualquier dispositivo. Usa el botón de actualizar 🔄 arriba para ver cambios recientes.</p></div>
                         </div>
                     </div>
                 </section>
@@ -479,33 +480,18 @@
 
     <div class="toast-container" id="toastBox"></div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDuJKYbMZmOhpeQJOT9sYugGe3QD9AiES8",
-            authDomain: "reparaciones-dr-cell.firebaseapp.com",
-            projectId: "reparaciones-dr-cell",
-            storageBucket: "reparaciones-dr-cell.firebasestorage.app",
-            messagingSenderId: "201646739993",
-            appId: "1:201646739993:web:0ea0850794cdd514a69088"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const reparacionesRef = collection(db, "reparaciones");
-
-        window.fb = { db, reparacionesRef, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy };
-        window.dispatchEvent(new Event('firebaseReady'));
-    </script>
-
     <script>
     (function() {
         'use strict';
+
+        // ============ CONFIGURACIÓN JSONBIN ============
+        const BIN_ID = '6a21f694f5f4af5e29ba9bf2';
+        const MASTER_KEY = '$2a$10$r.goQtUVrKslx4V.wN67IeldWFXZzvxjsiz12lJE888OR7zZlt8.C';
+        const API_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+
         let db = [];
         let cur = localStorage.getItem('dc_currency') || '$';
-        let firebaseReady = false;
+        let isSaving = false;
 
         function setSyncStatus(state, text) {
             const el = document.getElementById('syncStatus');
@@ -513,6 +499,8 @@
             el.className = 'sync-status' + (state ? ' ' + state : '');
             txt.textContent = text;
         }
+
+        function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
         function money(v) { return cur + parseFloat(v || 0).toFixed(2); }
         function todayStr() { return new Date().toISOString().split('T')[0]; }
         function fmtDate(d) { try { const x = new Date(d + 'T12:00:00'); return x.toLocaleDateString('es', { day:'2-digit', month:'short', year:'numeric' }); } catch(e) { return d; } }
@@ -528,32 +516,63 @@
             setTimeout(function() { el.classList.remove('show'); setTimeout(function() { el.remove(); }, 300); }, 2800);
         }
 
-        window.addEventListener('firebaseReady', function() {
-            firebaseReady = true;
-            startSync();
-        });
-
-        function startSync() {
-            setSyncStatus('syncing', 'Sincronizando...');
+        // ============ JSONBIN API ============
+        async function loadFromCloud() {
+            setSyncStatus('syncing', 'Cargando...');
             try {
-                const q = window.fb.query(window.fb.reparacionesRef, window.fb.orderBy('fecha', 'desc'));
-                window.fb.onSnapshot(q, function(snapshot) {
-                    db = [];
-                    snapshot.forEach(function(doc) { db.push(Object.assign({ id: doc.id }, doc.data())); });
-                    setSyncStatus('', 'Conectado');
-                    document.getElementById('loadingScreen').classList.add('hide');
-                    refreshUI();
-                }, function(err) {
-                    console.error('Error:', err);
-                    setSyncStatus('offline', 'Sin conexión');
-                    document.getElementById('loadingScreen').classList.add('hide');
-                    toast('Error de conexión', true);
+                const res = await fetch(API_URL + '/latest', {
+                    headers: { 'X-Master-Key': MASTER_KEY }
                 });
-            } catch(e) {
-                console.error(e);
-                setSyncStatus('offline', 'Error');
-                document.getElementById('loadingScreen').classList.add('hide');
-                toast('Verifica Firebase', true);
+                if (!res.ok) throw new Error('Status ' + res.status);
+                const json = await res.json();
+                db = (json.record && json.record.reparaciones) ? json.record.reparaciones : [];
+                setSyncStatus('', 'Conectado');
+                return true;
+            } catch(err) {
+                console.error('Error cargando:', err);
+                setSyncStatus('offline', 'Sin conexión');
+                toast('Error al cargar datos', true);
+                return false;
+            }
+        }
+
+        async function saveToCloud() {
+            if (isSaving) return false;
+            isSaving = true;
+            setSyncStatus('syncing', 'Guardando...');
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY
+                    },
+                    body: JSON.stringify({ reparaciones: db })
+                });
+                if (!res.ok) throw new Error('Status ' + res.status);
+                setSyncStatus('', 'Conectado');
+                return true;
+            } catch(err) {
+                console.error('Error guardando:', err);
+                setSyncStatus('offline', 'Sin conexión');
+                toast('Error al guardar en la nube', true);
+                return false;
+            } finally {
+                isSaving = false;
+            }
+        }
+
+        async function init() {
+            const ok = await loadFromCloud();
+            document.getElementById('loadingScreen').classList.add('hide');
+            if (ok) refreshUI();
+        }
+
+        async function refresh() {
+            const ok = await loadFromCloud();
+            if (ok) {
+                refreshUI();
+                toast('Datos actualizados');
             }
         }
 
@@ -567,13 +586,14 @@
             updateBadge();
         }
 
+        // ============ CRUD ============
         async function saveRepair(e) {
             e.preventDefault();
-            if (!firebaseReady) { toast('Esperando conexión...', true); return; }
             const btn = document.getElementById('btnSaveRepair');
             btn.disabled = true;
             try {
                 const r = {
+                    id: uid(),
                     fecha: document.getElementById('f_fecha').value,
                     cliente: document.getElementById('f_cliente').value.trim(),
                     tel: document.getElementById('f_tel').value.trim(),
@@ -585,12 +605,19 @@
                     notas: document.getElementById('f_notas').value.trim(),
                     ts: Date.now()
                 };
-                await window.fb.addDoc(window.fb.reparacionesRef, r);
-                e.target.reset();
-                document.getElementById('f_fecha').value = todayStr();
-                toast('Guardada en la nube');
-            } catch(err) { console.error(err); toast('Error al guardar', true); }
-            finally { btn.disabled = false; }
+                db.push(r);
+                const ok = await saveToCloud();
+                if (ok) {
+                    e.target.reset();
+                    document.getElementById('f_fecha').value = todayStr();
+                    toast('Guardada en la nube');
+                    refreshUI();
+                } else {
+                    db.pop();
+                }
+            } finally {
+                btn.disabled = false;
+            }
         }
 
         function openEdit(id) {
@@ -611,32 +638,42 @@
 
         async function updateRepair(e) {
             e.preventDefault();
-            if (!firebaseReady) return;
-            try {
-                const id = document.getElementById('e_id').value;
-                const data = {
-                    fecha: document.getElementById('e_fecha').value,
-                    cliente: document.getElementById('e_cliente').value.trim(),
-                    tel: document.getElementById('e_tel').value.trim(),
-                    modelo: document.getElementById('e_modelo').value.trim(),
-                    tipo: document.getElementById('e_tipo').value,
-                    estado: document.getElementById('e_estado').value,
-                    costo: parseFloat(document.getElementById('e_costo').value) || 0,
-                    cobro: parseFloat(document.getElementById('e_cobro').value) || 0,
-                    notas: document.getElementById('e_notas').value.trim()
-                };
-                await window.fb.updateDoc(window.fb.doc(window.fb.db, "reparaciones", id), data);
+            const id = document.getElementById('e_id').value;
+            const i = db.findIndex(function(x) { return x.id === id; });
+            if (i < 0) return;
+            const old = Object.assign({}, db[i]);
+            db[i] = Object.assign({}, db[i], {
+                fecha: document.getElementById('e_fecha').value,
+                cliente: document.getElementById('e_cliente').value.trim(),
+                tel: document.getElementById('e_tel').value.trim(),
+                modelo: document.getElementById('e_modelo').value.trim(),
+                tipo: document.getElementById('e_tipo').value,
+                estado: document.getElementById('e_estado').value,
+                costo: parseFloat(document.getElementById('e_costo').value) || 0,
+                cobro: parseFloat(document.getElementById('e_cobro').value) || 0,
+                notas: document.getElementById('e_notas').value.trim()
+            });
+            const ok = await saveToCloud();
+            if (ok) {
                 closeModal();
                 toast('Actualizada');
-            } catch(err) { console.error(err); toast('Error', true); }
+                refreshUI();
+            } else {
+                db[i] = old;
+            }
         }
 
         async function deleteRepair(id) {
             if (!confirm('¿Eliminar esta reparación?')) return;
-            try {
-                await window.fb.deleteDoc(window.fb.doc(window.fb.db, "reparaciones", id));
+            const backup = db.slice();
+            db = db.filter(function(x) { return x.id !== id; });
+            const ok = await saveToCloud();
+            if (ok) {
                 toast('Eliminada');
-            } catch(err) { console.error(err); toast('Error', true); }
+                refreshUI();
+            } else {
+                db = backup;
+            }
         }
 
         function closeModal() { document.getElementById('editModal').classList.remove('open'); }
@@ -779,7 +816,7 @@
             const types = {};
             db.forEach(function(r) { types[r.tipo] = (types[r.tipo] || 0) + 1; });
             const sorted = Object.entries(types).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 8);
-            if (!sorted.length) { el.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:30px;font-size:0.85em;">Sin datos aún. Registra tu primera reparación.</p>'; return; }
+            if (!sorted.length) { el.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:30px;font-size:0.85em;">Sin datos aún.</p>'; return; }
             const max = sorted[0][1];
             el.innerHTML = sorted.map(function(t) { return '<div class="bar-row"><span class="bar-label">' + esc(t[0]) + '</span><div class="bar-track"><div class="bar-fill type-bar" style="width:' + ((t[1]/max)*100) + '%"></div></div><span class="bar-value">' + t[1] + '</span></div>'; }).join('');
         }
@@ -863,10 +900,10 @@
             else { badge.style.display = 'none'; }
         }
 
-        document.addEventListener('DOMContentLoaded', init);
-        if (document.readyState !== 'loading') init();
+        document.addEventListener('DOMContentLoaded', startApp);
+        if (document.readyState !== 'loading') startApp();
 
-        function init() {
+        function startApp() {
             document.querySelectorAll('.nav-item').forEach(function(btn) { btn.addEventListener('click', function() { goTo(btn.getAttribute('data-section')); }); });
             document.querySelectorAll('.period-tab').forEach(function(btn) { btn.addEventListener('click', function() { setPeriod(btn.getAttribute('data-period')); }); });
             document.getElementById('repairForm').addEventListener('submit', saveRepair);
@@ -886,12 +923,14 @@
             document.getElementById('btnCSV').addEventListener('click', exportCSV);
             document.getElementById('btnCSV2').addEventListener('click', exportCSV);
             document.getElementById('btnExportBackup').addEventListener('click', exportData);
+            document.getElementById('btnRefresh').addEventListener('click', refresh);
             document.getElementById('currencySelect').addEventListener('change', saveCurrency);
             document.getElementById('mobileToggle').addEventListener('click', toggleSidebar);
             document.getElementById('topDate').textContent = new Date().toLocaleDateString('es', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
             document.getElementById('f_fecha').value = todayStr();
             document.getElementById('currencySelect').value = cur;
             setSyncStatus('syncing', 'Conectando...');
+            init();
         }
     })();
     </script>
