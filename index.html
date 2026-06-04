@@ -35,909 +35,171 @@
             --radius-lg: 12px;
             --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.04);
             --shadow: 0 1px 3px 0 rgba(0,0,0,0.06), 0 1px 2px 0 rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -1px rgba(0,0,0,0.04);
             --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
             --transition: 0.15s ease;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html, body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-app);
-            color: var(--text-primary);
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-            font-size: 14px;
-        }
-
-        button, input, select, textarea {
-            font-family: inherit;
-        }
-
-        /* SIDEBAR */
-        .layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 250px;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            z-index: 200;
-            transition: transform 0.25s ease;
-        }
-
-        .sidebar-brand {
-            padding: 20px 18px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sidebar-brand .logo {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #2563EB, #1D4ED8);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.05em;
-            color: #fff;
-            flex-shrink: 0;
-            box-shadow: 0 2px 6px rgba(37,99,235,0.25);
-        }
-
-        .sidebar-brand .brand-text h2 {
-            font-size: 1em;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.3px;
-            line-height: 1.2;
-        }
-
-        .sidebar-brand .brand-text span {
-            font-size: 0.7em;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .sidebar-nav {
-            padding: 14px 10px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            overflow-y: auto;
-        }
-
-        .nav-section-title {
-            font-size: 0.65em;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--text-light);
-            padding: 14px 12px 6px;
-            font-weight: 700;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            padding: 9px 12px;
-            border-radius: 7px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            font-size: 0.88em;
-            font-weight: 500;
-            transition: all var(--transition);
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
-        }
-
-        .nav-item:hover {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-        }
-
-        .nav-item.active {
-            background: var(--accent-soft);
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .nav-item.active i {
-            color: var(--accent);
-        }
-
-        .nav-item i {
-            width: 18px;
-            text-align: center;
-            font-size: 0.92em;
-            color: var(--text-light);
-            transition: color var(--transition);
-        }
-
-        .nav-item:hover i {
-            color: var(--text-secondary);
-        }
-
-        .nav-item .badge {
-            margin-left: auto;
-            background: var(--danger);
-            color: #fff;
-            font-size: 0.7em;
-            padding: 2px 7px;
-            border-radius: 10px;
-            font-weight: 700;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        .sidebar-footer {
-            padding: 14px 18px;
-            border-top: 1px solid var(--border);
-            font-size: 0.72em;
-            color: var(--text-light);
-            text-align: center;
-        }
-
-        /* MAIN */
-        .main-content {
-            flex: 1;
-            margin-left: 250px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* TOPBAR */
-        .topbar {
-            height: 60px;
-            background: var(--bg-sidebar);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 28px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .topbar-left h1 {
-            font-size: 1.1em;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.3px;
-        }
-
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.2em;
-            cursor: pointer;
-            padding: 6px;
-            border-radius: 6px;
-        }
-
+        html, body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg-app); color: var(--text-primary); min-height: 100vh; -webkit-font-smoothing: antialiased; font-size: 14px; }
+        button, input, select, textarea { font-family: inherit; }
+        .loading-screen { position: fixed; inset: 0; background: var(--bg-app); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; gap: 20px; }
+        .loading-screen.hide { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .spinner { width: 48px; height: 48px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { color: var(--text-muted); font-size: 0.9em; font-weight: 500; }
+        .sync-status { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 6px; font-size: 0.75em; font-weight: 600; background: var(--success-soft); color: var(--success); }
+        .sync-status.offline { background: var(--danger-soft); color: var(--danger); }
+        .sync-status.syncing { background: var(--warning-soft); color: var(--warning); }
+        .sync-status .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 250px; background: var(--bg-sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 200; transition: transform 0.25s ease; }
+        .sidebar-brand { padding: 20px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+        .sidebar-brand .logo { width: 40px; height: 40px; background: linear-gradient(135deg, #2563EB, #1D4ED8); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.05em; color: #fff; flex-shrink: 0; box-shadow: 0 2px 6px rgba(37,99,235,0.25); }
+        .sidebar-brand .brand-text h2 { font-size: 1em; font-weight: 700; letter-spacing: -0.3px; line-height: 1.2; }
+        .sidebar-brand .brand-text span { font-size: 0.7em; color: var(--text-muted); font-weight: 500; }
+        .sidebar-nav { padding: 14px 10px; flex: 1; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+        .nav-section-title { font-size: 0.65em; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-light); padding: 14px 12px 6px; font-weight: 700; }
+        .nav-item { display: flex; align-items: center; gap: 11px; padding: 9px 12px; border-radius: 7px; cursor: pointer; color: var(--text-secondary); font-size: 0.88em; font-weight: 500; transition: all var(--transition); border: none; background: none; width: 100%; text-align: left; }
+        .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .nav-item.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+        .nav-item.active i { color: var(--accent); }
+        .nav-item i { width: 18px; text-align: center; font-size: 0.92em; color: var(--text-light); transition: color var(--transition); }
+        .nav-item:hover i { color: var(--text-secondary); }
+        .nav-item .badge { margin-left: auto; background: var(--danger); color: #fff; font-size: 0.7em; padding: 2px 7px; border-radius: 10px; font-weight: 700; min-width: 20px; text-align: center; }
+        .sidebar-footer { padding: 14px 18px; border-top: 1px solid var(--border); font-size: 0.72em; color: var(--text-light); text-align: center; }
+        .main-content { flex: 1; margin-left: 250px; min-height: 100vh; display: flex; flex-direction: column; }
+        .topbar { height: 60px; background: var(--bg-sidebar); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; position: sticky; top: 0; z-index: 100; }
+        .topbar-left { display: flex; align-items: center; gap: 14px; }
+        .topbar-left h1 { font-size: 1.1em; font-weight: 700; letter-spacing: -0.3px; }
+        .mobile-toggle { display: none; background: none; border: none; color: var(--text-secondary); font-size: 1.2em; cursor: pointer; padding: 6px; border-radius: 6px; }
         .mobile-toggle:hover { background: var(--bg-hover); }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .topbar-date {
-            font-size: 0.82em;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .topbar-avatar {
-            width: 34px;
-            height: 34px;
-            background: linear-gradient(135deg, var(--accent), var(--purple));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.78em;
-            color: #fff;
-        }
-
-        .page-content {
-            padding: 26px;
-            flex: 1;
-        }
-
-        .page-section {
-            display: none;
-        }
-
-        .page-section.active {
-            display: block;
-            animation: pageIn 0.2s ease;
-        }
-
-        @keyframes pageIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* CARDS */
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-        }
-
-        .card-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .card-header h3 {
-            font-size: 0.95em;
-            font-weight: 600;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-
-        .card-header h3 i {
-            color: var(--text-muted);
-            font-size: 0.9em;
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
+        .topbar-right { display: flex; align-items: center; gap: 14px; }
+        .topbar-date { font-size: 0.82em; color: var(--text-muted); font-weight: 500; }
+        .topbar-avatar { width: 34px; height: 34px; background: linear-gradient(135deg, var(--accent), var(--purple)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.78em; color: #fff; }
+        .page-content { padding: 26px; flex: 1; }
+        .page-section { display: none; }
+        .page-section.active { display: block; animation: pageIn 0.2s ease; }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; }
+        .card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+        .card-header h3 { font-size: 0.95em; font-weight: 600; display: flex; align-items: center; gap: 9px; }
+        .card-header h3 i { color: var(--text-muted); font-size: 0.9em; }
+        .card-body { padding: 20px; }
         .card + .card { margin-top: 18px; }
-
-        /* STATS */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 18px;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            transition: all var(--transition);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .stat-card:hover {
-            border-color: var(--border-strong);
-            box-shadow: var(--shadow);
-        }
-
-        .stat-icon-wrap {
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.05em;
-            flex-shrink: 0;
-        }
-
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 18px; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; display: flex; align-items: flex-start; gap: 14px; transition: all var(--transition); box-shadow: var(--shadow-sm); }
+        .stat-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow); }
+        .stat-icon-wrap { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.05em; flex-shrink: 0; }
         .stat-icon-wrap.blue { background: var(--accent-soft); color: var(--accent); }
         .stat-icon-wrap.green { background: var(--success-soft); color: var(--success); }
         .stat-icon-wrap.orange { background: var(--warning-soft); color: var(--warning); }
         .stat-icon-wrap.red { background: var(--danger-soft); color: var(--danger); }
         .stat-icon-wrap.purple { background: var(--purple-soft); color: var(--purple); }
-
         .stat-info { flex: 1; min-width: 0; }
-
-        .stat-info .label {
-            font-size: 0.74em;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .stat-info .value {
-            font-size: 1.45em;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-            color: var(--text-primary);
-        }
-
-        .stat-info .sub {
-            font-size: 0.72em;
-            color: var(--text-light);
-            margin-top: 3px;
-            font-weight: 500;
-        }
-
-        /* FORMS */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 16px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
+        .stat-info .label { font-size: 0.74em; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .stat-info .value { font-size: 1.45em; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+        .stat-info .sub { font-size: 0.72em; color: var(--text-light); margin-top: 3px; font-weight: 500; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
         .form-group.full { grid-column: 1 / -1; }
-
-        .form-label {
-            font-size: 0.8em;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .form-control {
-            padding: 9px 12px;
-            background: var(--bg-input);
-            border: 1px solid var(--border-strong);
-            border-radius: 7px;
-            color: var(--text-primary);
-            font-size: 0.88em;
-            outline: none;
-            transition: all var(--transition);
-            width: 100%;
-        }
-
-        .form-control:hover {
-            border-color: var(--text-light);
-        }
-
-        .form-control:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-        }
-
+        .form-label { font-size: 0.8em; font-weight: 600; color: var(--text-secondary); }
+        .form-control { padding: 9px 12px; background: var(--bg-input); border: 1px solid var(--border-strong); border-radius: 7px; color: var(--text-primary); font-size: 0.88em; outline: none; transition: all var(--transition); width: 100%; }
+        .form-control:hover { border-color: var(--text-light); }
+        .form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
         .form-control::placeholder { color: var(--text-light); }
-
-        textarea.form-control {
-            resize: vertical;
-            min-height: 80px;
-            font-family: inherit;
-        }
-
+        textarea.form-control { resize: vertical; min-height: 80px; }
         select.form-control { cursor: pointer; }
-
-        .form-row-inline {
-            display: flex;
-            gap: 12px;
-            align-items: flex-end;
-            flex-wrap: wrap;
-        }
-
-        .form-row-inline .form-group {
-            flex: 1;
-            min-width: 160px;
-        }
-
-        /* BUTTONS */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            padding: 9px 17px;
-            border-radius: 7px;
-            font-size: 0.85em;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: all var(--transition);
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
-            box-shadow: 0 2px 6px rgba(37,99,235,0.25);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: #fff;
-            border-color: var(--success);
-        }
-        .btn-success:hover { background: #047857; border-color: #047857; }
-
-        .btn-danger {
-            background: #fff;
-            color: var(--danger);
-            border-color: var(--border-strong);
-        }
-        .btn-danger:hover {
-            background: var(--danger-soft);
-            border-color: var(--danger);
-        }
-
-        .btn-ghost {
-            background: #fff;
-            color: var(--text-secondary);
-            border-color: var(--border-strong);
-        }
-        .btn-ghost:hover {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 0.78em;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        /* TABLE */
+        .form-row-inline { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+        .form-row-inline .form-group { flex: 1; min-width: 160px; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 17px; border-radius: 7px; font-size: 0.85em; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all var(--transition); white-space: nowrap; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .btn-primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); box-shadow: 0 2px 6px rgba(37,99,235,0.25); }
+        .btn-success { background: var(--success); color: #fff; border-color: var(--success); }
+        .btn-success:hover:not(:disabled) { background: #047857; border-color: #047857; }
+        .btn-danger { background: #fff; color: var(--danger); border-color: var(--border-strong); }
+        .btn-danger:hover:not(:disabled) { background: var(--danger-soft); border-color: var(--danger); }
+        .btn-ghost { background: #fff; color: var(--text-secondary); border-color: var(--border-strong); }
+        .btn-ghost:hover:not(:disabled) { background: var(--bg-hover); color: var(--text-primary); }
+        .btn-sm { padding: 6px 12px; font-size: 0.78em; }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
         .table-wrap { overflow-x: auto; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            padding: 11px 16px;
-            font-size: 0.72em;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-            background: var(--bg-subtle);
-        }
-
-        td {
-            padding: 13px 16px;
-            font-size: 0.86em;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
-            vertical-align: middle;
-        }
-
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 11px 16px; font-size: 0.72em; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; border-bottom: 1px solid var(--border); white-space: nowrap; background: var(--bg-subtle); }
+        td { padding: 13px 16px; font-size: 0.86em; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: middle; }
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: var(--bg-subtle); }
-
-        .td-client {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .td-phone {
-            font-size: 0.78em;
-            color: var(--text-light);
-        }
-
+        .td-client { font-weight: 600; color: var(--text-primary); }
+        .td-phone { font-size: 0.78em; color: var(--text-light); }
         .td-money { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text-primary); }
         .td-profit-up { color: var(--success); }
         .td-profit-down { color: var(--danger); }
-
-        /* BADGES */
-        .badge-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px 9px;
-            border-radius: 5px;
-            font-size: 0.74em;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
+        .badge-status { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 5px; font-size: 0.74em; font-weight: 600; white-space: nowrap; }
         .badge-status.pending { background: var(--warning-soft); color: var(--warning); }
         .badge-status.complete { background: var(--success-soft); color: var(--success); }
         .badge-status.delivered { background: var(--accent-soft); color: var(--accent); }
-
-        .badge-status .dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
+        .badge-status .dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
         .badge-status.pending .dot { background: var(--warning); }
         .badge-status.complete .dot { background: var(--success); }
         .badge-status.delivered .dot { background: var(--accent); }
-
         .actions-cell { display: flex; gap: 4px; }
-
-        .btn-icon {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: #fff;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 0.78em;
-            transition: all var(--transition);
-        }
-
-        .btn-icon:hover {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-            border-color: var(--border-strong);
-        }
-
-        .btn-icon.danger:hover {
-            background: var(--danger-soft);
-            color: var(--danger);
-            border-color: var(--danger);
-        }
-
-        /* FILTERS */
-        .filters-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
-            align-items: stretch;
-        }
-
-        .search-wrap {
-            position: relative;
-            flex: 1;
-            min-width: 220px;
-        }
-
-        .search-wrap i {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-            font-size: 0.85em;
-            pointer-events: none;
-        }
-
-        .search-wrap input {
-            padding-left: 34px;
-        }
-
-        /* PERIOD TABS */
-        .period-tabs {
-            display: inline-flex;
-            gap: 3px;
-            background: var(--bg-subtle);
-            border-radius: 8px;
-            padding: 3px;
-            border: 1px solid var(--border);
-            margin-bottom: 18px;
-        }
-
-        .period-tab {
-            padding: 7px 16px;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-size: 0.82em;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all var(--transition);
-        }
-
+        .btn-icon { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid var(--border); background: #fff; color: var(--text-muted); cursor: pointer; font-size: 0.78em; transition: all var(--transition); }
+        .btn-icon:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--border-strong); }
+        .btn-icon.danger:hover { background: var(--danger-soft); color: var(--danger); border-color: var(--danger); }
+        .filters-row { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; align-items: stretch; }
+        .search-wrap { position: relative; flex: 1; min-width: 220px; }
+        .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 0.85em; pointer-events: none; }
+        .search-wrap input { padding-left: 34px; }
+        .period-tabs { display: inline-flex; gap: 3px; background: var(--bg-subtle); border-radius: 8px; padding: 3px; border: 1px solid var(--border); margin-bottom: 18px; }
+        .period-tab { padding: 7px 16px; border: none; background: transparent; color: var(--text-muted); font-size: 0.82em; font-weight: 600; cursor: pointer; border-radius: 6px; transition: all var(--transition); }
         .period-tab:hover { color: var(--text-primary); }
-
-        .period-tab.active {
-            background: #fff;
-            color: var(--accent);
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* BAR CHART */
-        .bar-chart {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .bar-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .bar-label {
-            width: 78px;
-            font-size: 0.78em;
-            color: var(--text-muted);
-            text-align: right;
-            flex-shrink: 0;
-            font-weight: 500;
-        }
-
-        .bar-track {
-            flex: 1;
-            height: 24px;
-            background: var(--bg-subtle);
-            border-radius: 5px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .bar-fill {
-            height: 100%;
-            border-radius: 5px;
-            transition: width 0.6s ease;
-            min-width: 2px;
-        }
-
+        .period-tab.active { background: #fff; color: var(--accent); box-shadow: var(--shadow-sm); }
+        .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+        .bar-row { display: flex; align-items: center; gap: 12px; }
+        .bar-label { width: 78px; font-size: 0.78em; color: var(--text-muted); text-align: right; flex-shrink: 0; font-weight: 500; }
+        .bar-track { flex: 1; height: 24px; background: var(--bg-subtle); border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+        .bar-fill { height: 100%; border-radius: 5px; transition: width 0.6s ease; min-width: 2px; }
         .bar-fill.profit-bar { background: linear-gradient(90deg, #10B981, #059669); }
-        .bar-fill.income-bar { background: linear-gradient(90deg, #3B82F6, #2563EB); }
         .bar-fill.type-bar { background: linear-gradient(90deg, #8B5CF6, #7C3AED); }
-
-        .bar-value {
-            width: 95px;
-            font-size: 0.8em;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-align: right;
-            flex-shrink: 0;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* SUMMARY */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 16px;
-        }
-
+        .bar-value { width: 95px; font-size: 0.8em; font-weight: 600; color: var(--text-primary); text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
         .summary-list { display: flex; flex-direction: column; }
-
-        .summary-row-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.86em;
-        }
-
+        .summary-row-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.86em; }
         .summary-row-item:last-child { border-bottom: none; }
-
         .summary-row-item .sr-label { color: var(--text-secondary); }
-
-        .summary-row-item .sr-value {
-            font-weight: 600;
-            color: var(--text-primary);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .summary-row-item.total-row {
-            border-top: 2px solid var(--border-strong);
-            margin-top: 6px;
-            padding-top: 13px;
-        }
-
-        .summary-row-item.total-row .sr-label {
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .sub-heading {
-            font-size: 0.75em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .sub-heading-spaced {
-            font-size: 0.75em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin: 18px 0 8px;
-            font-weight: 700;
-        }
-
-        /* EMPTY STATE */
-        .empty-state {
-            padding: 50px 20px;
-            text-align: center;
-        }
-
-        .empty-state i {
-            font-size: 2.5em;
-            color: var(--border-strong);
-            margin-bottom: 14px;
-        }
-
-        .empty-state p {
-            color: var(--text-muted);
-            font-size: 0.9em;
-        }
-
-        /* MODAL */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(17,24,39,0.5);
-            backdrop-filter: blur(3px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+        .summary-row-item .sr-value { font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+        .summary-row-item.total-row { border-top: 2px solid var(--border-strong); margin-top: 6px; padding-top: 13px; }
+        .summary-row-item.total-row .sr-label { font-weight: 700; }
+        .sub-heading { font-size: 0.75em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; font-weight: 700; }
+        .sub-heading-spaced { font-size: 0.75em; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin: 18px 0 8px; font-weight: 700; }
+        .empty-state { padding: 50px 20px; text-align: center; }
+        .empty-state i { font-size: 2.5em; color: var(--border-strong); margin-bottom: 14px; }
+        .empty-state p { color: var(--text-muted); font-size: 0.9em; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(17,24,39,0.5); backdrop-filter: blur(3px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         .modal-overlay.open { display: flex; }
-
-        .modal {
-            background: #fff;
-            border-radius: var(--radius-lg);
-            width: 100%;
-            max-width: 580px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .modal-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modal-head h3 {
-            font-size: 1em;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .modal-close {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 1.3em;
-            transition: all var(--transition);
-        }
-
-        .modal-close:hover {
-            background: var(--danger-soft);
-            color: var(--danger);
-        }
-
+        .modal { background: #fff; border-radius: var(--radius-lg); width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
+        .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+        .modal-head h3 { font-size: 1em; font-weight: 600; }
+        .modal-close { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; font-size: 1.3em; transition: all var(--transition); }
+        .modal-close:hover { background: var(--danger-soft); color: var(--danger); }
         .modal-body { padding: 20px; }
-
-        /* TOAST */
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 5000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .toast-msg {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-left: 4px solid var(--success);
-            border-radius: 8px;
-            padding: 12px 18px;
-            font-size: 0.85em;
-            font-weight: 500;
-            color: var(--text-primary);
-            box-shadow: var(--shadow-lg);
-            transform: translateX(120%);
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 220px;
-        }
-
+        .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 5000; display: flex; flex-direction: column; gap: 8px; }
+        .toast-msg { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--success); border-radius: 8px; padding: 12px 18px; font-size: 0.85em; font-weight: 500; color: var(--text-primary); box-shadow: var(--shadow-lg); transform: translateX(120%); transition: transform 0.3s ease; display: flex; align-items: center; gap: 10px; min-width: 220px; }
         .toast-msg.show { transform: translateX(0); }
         .toast-msg.error { border-left-color: var(--danger); }
         .toast-msg i.fa-circle-check { color: var(--success); }
         .toast-msg i.fa-circle-xmark { color: var(--danger); }
-
-        /* MOBILE OVERLAY */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(17,24,39,0.4);
-            z-index: 150;
-        }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(17,24,39,0.4); z-index: 150; }
         .sidebar-overlay.show { display: block; }
-
-        /* INFO BOX */
-        .info-box {
-            margin-top: 24px;
-            padding: 14px 16px;
-            background: var(--accent-soft);
-            border-radius: 8px;
-            border: 1px solid #BFDBFE;
-        }
-        .info-box p {
-            font-size: 0.83em;
-            color: #1E40AF;
-            line-height: 1.5;
-        }
+        .info-box { margin-top: 24px; padding: 14px 16px; background: var(--accent-soft); border-radius: 8px; border: 1px solid #BFDBFE; }
+        .info-box p { font-size: 0.83em; color: #1E40AF; line-height: 1.5; }
         .info-box i { margin-right: 6px; }
-
-        /* RESPONSIVE */
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); box-shadow: var(--shadow-lg); }
             .main-content { margin-left: 0; }
             .mobile-toggle { display: flex; }
         }
-
         @media (max-width: 768px) {
             .page-content { padding: 16px; }
             .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -950,7 +212,6 @@
             .card-header { padding: 14px 16px; }
             .summary-grid { grid-template-columns: 1fr; }
         }
-
         @media (max-width: 480px) {
             .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
             .stat-card { flex-direction: column; gap: 8px; padding: 12px; }
@@ -961,7 +222,6 @@
             .bar-label { width: 55px; font-size: 0.7em; }
             .bar-value { width: 75px; font-size: 0.72em; }
         }
-
         @media print {
             .sidebar, .topbar, .btn, .actions-cell, .filters-row, .mobile-toggle, .sidebar-overlay { display: none !important; }
             .main-content { margin-left: 0; }
@@ -971,6 +231,11 @@
     </style>
 </head>
 <body>
+
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <div class="loading-text">Conectando con la base de datos...</div>
+    </div>
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
@@ -985,30 +250,15 @@
             </div>
             <nav class="sidebar-nav">
                 <div class="nav-section-title">Principal</div>
-                <button class="nav-item active" data-section="dashboard">
-                    <i class="fas fa-chart-pie"></i> Dashboard
-                </button>
-                <button class="nav-item" data-section="nueva">
-                    <i class="fas fa-plus-circle"></i> Nueva Reparación
-                </button>
-                <button class="nav-item" data-section="listado">
-                    <i class="fas fa-list-check"></i> Reparaciones
-                    <span class="badge" id="pendingBadge" style="display:none;">0</span>
-                </button>
-
+                <button class="nav-item active" data-section="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</button>
+                <button class="nav-item" data-section="nueva"><i class="fas fa-plus-circle"></i> Nueva Reparación</button>
+                <button class="nav-item" data-section="listado"><i class="fas fa-list-check"></i> Reparaciones<span class="badge" id="pendingBadge" style="display:none;">0</span></button>
                 <div class="nav-section-title">Finanzas</div>
-                <button class="nav-item" data-section="reportes">
-                    <i class="fas fa-file-invoice-dollar"></i> Reportes
-                </button>
-
+                <button class="nav-item" data-section="reportes"><i class="fas fa-file-invoice-dollar"></i> Reportes</button>
                 <div class="nav-section-title">Sistema</div>
-                <button class="nav-item" data-section="ajustes">
-                    <i class="fas fa-gear"></i> Ajustes
-                </button>
+                <button class="nav-item" data-section="ajustes"><i class="fas fa-gear"></i> Ajustes</button>
             </nav>
-            <div class="sidebar-footer">
-                Dr Cell &copy; 2024
-            </div>
+            <div class="sidebar-footer">Dr Cell &copy; 2024</div>
         </aside>
 
         <main class="main-content">
@@ -1018,6 +268,7 @@
                     <h1 id="pageTitle">Dashboard</h1>
                 </div>
                 <div class="topbar-right">
+                    <div class="sync-status" id="syncStatus"><span class="dot"></span><span id="syncText">Conectado</span></div>
                     <span class="topbar-date" id="topDate"></span>
                     <div class="topbar-avatar">DC</div>
                 </div>
@@ -1025,14 +276,10 @@
 
             <div class="page-content">
 
-                <!-- DASHBOARD -->
                 <section id="sec-dashboard" class="page-section active">
                     <div class="stats-row" id="dashStats"></div>
-
                     <div class="card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-coins"></i> Ganancias por Período</h3>
-                        </div>
+                        <div class="card-header"><h3><i class="fas fa-coins"></i> Ganancias por Período</h3></div>
                         <div class="card-body">
                             <div class="period-tabs" id="periodTabs">
                                 <button class="period-tab active" data-period="hoy">Hoy</button>
@@ -1043,46 +290,23 @@
                             <div class="stats-row" id="periodStats" style="margin-bottom:0;"></div>
                         </div>
                     </div>
-
                     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px;margin-top:18px;">
-                        <div class="card">
-                            <div class="card-header"><h3><i class="fas fa-chart-column"></i> Últimos 7 Días</h3></div>
-                            <div class="card-body"><div class="bar-chart" id="weekChart"></div></div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header"><h3><i class="fas fa-wrench"></i> Tipos de Reparación</h3></div>
-                            <div class="card-body"><div class="bar-chart" id="typeChart"></div></div>
-                        </div>
+                        <div class="card"><div class="card-header"><h3><i class="fas fa-chart-column"></i> Últimos 7 Días</h3></div><div class="card-body"><div class="bar-chart" id="weekChart"></div></div></div>
+                        <div class="card"><div class="card-header"><h3><i class="fas fa-wrench"></i> Tipos de Reparación</h3></div><div class="card-body"><div class="bar-chart" id="typeChart"></div></div></div>
                     </div>
                 </section>
 
-                <!-- NUEVA -->
                 <section id="sec-nueva" class="page-section">
                     <div class="card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-screwdriver-wrench"></i> Registrar Reparación</h3>
-                        </div>
+                        <div class="card-header"><h3><i class="fas fa-screwdriver-wrench"></i> Registrar Reparación</h3></div>
                         <div class="card-body">
                             <form id="repairForm">
                                 <div class="form-grid">
-                                    <div class="form-group">
-                                        <label class="form-label">Fecha</label>
-                                        <input type="date" class="form-control" id="f_fecha" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Cliente</label>
-                                        <input type="text" class="form-control" id="f_cliente" placeholder="Nombre completo" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Teléfono</label>
-                                        <input type="tel" class="form-control" id="f_tel" placeholder="Contacto">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Marca / Modelo</label>
-                                        <input type="text" class="form-control" id="f_modelo" placeholder="Ej: iPhone 14 Pro" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Tipo de Reparación</label>
+                                    <div class="form-group"><label class="form-label">Fecha</label><input type="date" class="form-control" id="f_fecha" required></div>
+                                    <div class="form-group"><label class="form-label">Cliente</label><input type="text" class="form-control" id="f_cliente" placeholder="Nombre completo" required></div>
+                                    <div class="form-group"><label class="form-label">Teléfono</label><input type="tel" class="form-control" id="f_tel" placeholder="Contacto"></div>
+                                    <div class="form-group"><label class="form-label">Marca / Modelo</label><input type="text" class="form-control" id="f_modelo" placeholder="Ej: iPhone 14 Pro" required></div>
+                                    <div class="form-group"><label class="form-label">Tipo de Reparación</label>
                                         <select class="form-control" id="f_tipo">
                                             <option value="Pantalla">Cambio de Pantalla</option>
                                             <option value="Batería">Cambio de Batería</option>
@@ -1097,29 +321,19 @@
                                             <option value="Otro">Otro</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Estado</label>
+                                    <div class="form-group"><label class="form-label">Estado</label>
                                         <select class="form-control" id="f_estado">
                                             <option value="Pendiente">Pendiente</option>
                                             <option value="Completada">Completada</option>
                                             <option value="Entregada">Entregada</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Costo de piezas / material</label>
-                                        <input type="number" class="form-control" id="f_costo" step="0.01" min="0" placeholder="0.00" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Precio cobrado al cliente</label>
-                                        <input type="number" class="form-control" id="f_cobro" step="0.01" min="0" placeholder="0.00" required>
-                                    </div>
-                                    <div class="form-group full">
-                                        <label class="form-label">Notas adicionales</label>
-                                        <textarea class="form-control" id="f_notas" placeholder="Descripción del problema, observaciones..."></textarea>
-                                    </div>
+                                    <div class="form-group"><label class="form-label">Costo de piezas / material</label><input type="number" class="form-control" id="f_costo" step="0.01" min="0" placeholder="0.00" required></div>
+                                    <div class="form-group"><label class="form-label">Precio cobrado al cliente</label><input type="number" class="form-control" id="f_cobro" step="0.01" min="0" placeholder="0.00" required></div>
+                                    <div class="form-group full"><label class="form-label">Notas adicionales</label><textarea class="form-control" id="f_notas" placeholder="Descripción del problema, observaciones..."></textarea></div>
                                 </div>
                                 <div class="btn-group">
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                                    <button type="submit" class="btn btn-primary" id="btnSaveRepair"><i class="fas fa-save"></i> Guardar</button>
                                     <button type="reset" class="btn btn-ghost"><i class="fas fa-eraser"></i> Limpiar</button>
                                 </div>
                             </form>
@@ -1127,7 +341,6 @@
                     </div>
                 </section>
 
-                <!-- LISTADO -->
                 <section id="sec-listado" class="page-section">
                     <div class="card">
                         <div class="card-header">
@@ -1136,10 +349,7 @@
                         </div>
                         <div class="card-body">
                             <div class="filters-row">
-                                <div class="search-wrap">
-                                    <i class="fas fa-search"></i>
-                                    <input type="text" class="form-control" id="searchInput" placeholder="Buscar por cliente o modelo...">
-                                </div>
+                                <div class="search-wrap"><i class="fas fa-search"></i><input type="text" class="form-control" id="searchInput" placeholder="Buscar por cliente o modelo..."></div>
                                 <select class="form-control" id="filterEstado" style="max-width:180px;">
                                     <option value="">Todos los estados</option>
                                     <option value="Pendiente">Pendiente</option>
@@ -1149,43 +359,23 @@
                                 <input type="date" class="form-control" id="filterDesde" title="Desde" style="max-width:160px;">
                                 <input type="date" class="form-control" id="filterHasta" title="Hasta" style="max-width:160px;">
                             </div>
-
                             <div class="table-wrap">
                                 <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Fecha</th>
-                                            <th>Cliente</th>
-                                            <th>Dispositivo</th>
-                                            <th>Reparación</th>
-                                            <th>Costo</th>
-                                            <th>Cobro</th>
-                                            <th>Ganancia</th>
-                                            <th>Estado</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
+                                    <thead><tr><th>Fecha</th><th>Cliente</th><th>Dispositivo</th><th>Reparación</th><th>Costo</th><th>Cobro</th><th>Ganancia</th><th>Estado</th><th></th></tr></thead>
                                     <tbody id="tableBody"></tbody>
                                 </table>
                             </div>
-                            <div id="emptyTable" class="empty-state" style="display:none;">
-                                <i class="fas fa-inbox"></i>
-                                <p>No se encontraron reparaciones</p>
-                            </div>
+                            <div id="emptyTable" class="empty-state" style="display:none;"><i class="fas fa-inbox"></i><p>No se encontraron reparaciones</p></div>
                         </div>
                     </div>
                 </section>
 
-                <!-- REPORTES -->
                 <section id="sec-reportes" class="page-section">
                     <div class="card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-file-invoice-dollar"></i> Reporte Financiero</h3>
-                        </div>
+                        <div class="card-header"><h3><i class="fas fa-file-invoice-dollar"></i> Reporte Financiero</h3></div>
                         <div class="card-body">
                             <div class="form-row-inline" style="margin-bottom:20px;">
-                                <div class="form-group">
-                                    <label class="form-label">Período</label>
+                                <div class="form-group"><label class="form-label">Período</label>
                                     <select class="form-control" id="reportPeriod">
                                         <option value="hoy">Hoy</option>
                                         <option value="semana">Esta semana</option>
@@ -1194,18 +384,10 @@
                                         <option value="custom">Personalizado</option>
                                     </select>
                                 </div>
-                                <div class="form-group" id="rpFromWrap" style="display:none;">
-                                    <label class="form-label">Desde</label>
-                                    <input type="date" class="form-control" id="rpFrom">
-                                </div>
-                                <div class="form-group" id="rpToWrap" style="display:none;">
-                                    <label class="form-label">Hasta</label>
-                                    <input type="date" class="form-control" id="rpTo">
-                                </div>
+                                <div class="form-group" id="rpFromWrap" style="display:none;"><label class="form-label">Desde</label><input type="date" class="form-control" id="rpFrom"></div>
+                                <div class="form-group" id="rpToWrap" style="display:none;"><label class="form-label">Hasta</label><input type="date" class="form-control" id="rpTo"></div>
                             </div>
-
                             <div class="summary-grid" id="reportContent"></div>
-
                             <div class="btn-group">
                                 <button class="btn btn-ghost" id="btnPrint"><i class="fas fa-print"></i> Imprimir</button>
                                 <button class="btn btn-success" id="btnCSV"><i class="fas fa-file-csv"></i> Exportar CSV</button>
@@ -1214,16 +396,12 @@
                     </div>
                 </section>
 
-                <!-- AJUSTES -->
                 <section id="sec-ajustes" class="page-section">
                     <div class="card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-gear"></i> Configuración</h3>
-                        </div>
+                        <div class="card-header"><h3><i class="fas fa-gear"></i> Configuración</h3></div>
                         <div class="card-body">
                             <div class="form-grid" style="max-width:400px;">
-                                <div class="form-group">
-                                    <label class="form-label">Moneda</label>
+                                <div class="form-group"><label class="form-label">Moneda</label>
                                     <select class="form-control" id="currencySelect">
                                         <option value="$">$ Dólar / Peso</option>
                                         <option value="€">€ Euro</option>
@@ -1237,20 +415,14 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div style="margin-top:28px;">
-                                <h3 style="font-size:0.9em;font-weight:600;margin-bottom:12px;color:var(--text-primary);">Gestión de Datos</h3>
+                                <h3 style="font-size:0.9em;font-weight:600;margin-bottom:12px;">Exportar Datos</h3>
                                 <div class="btn-group" style="margin-top:0;">
-                                    <button class="btn btn-primary" id="btnExportBackup"><i class="fas fa-download"></i> Exportar Backup</button>
-                                    <button class="btn btn-ghost" id="btnImport"><i class="fas fa-upload"></i> Importar</button>
-                                    <input type="file" id="importFile" accept=".json" style="display:none;">
-                                    <button class="btn btn-danger" id="btnClear"><i class="fas fa-trash-can"></i> Borrar Todo</button>
+                                    <button class="btn btn-success" id="btnCSV2"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+                                    <button class="btn btn-primary" id="btnExportBackup"><i class="fas fa-download"></i> Exportar Backup JSON</button>
                                 </div>
                             </div>
-
-                            <div class="info-box">
-                                <p><i class="fas fa-circle-info"></i>Los datos se almacenan localmente en tu navegador. Realiza backups periódicos para no perder información.</p>
-                            </div>
+                            <div class="info-box"><p><i class="fas fa-cloud"></i><strong>Sincronización activa:</strong> Tus datos se guardan automáticamente en la nube. Puedes acceder desde cualquier dispositivo abriendo esta misma página.</p></div>
                         </div>
                     </div>
                 </section>
@@ -1259,34 +431,17 @@
         </main>
     </div>
 
-    <!-- MODAL -->
     <div class="modal-overlay" id="editModal">
         <div class="modal">
-            <div class="modal-head">
-                <h3>Editar Reparación</h3>
-                <button class="modal-close" id="modalCloseBtn">&times;</button>
-            </div>
+            <div class="modal-head"><h3>Editar Reparación</h3><button class="modal-close" id="modalCloseBtn">&times;</button></div>
             <div class="modal-body">
                 <form id="editForm">
                     <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Fecha</label>
-                            <input type="date" class="form-control" id="e_fecha" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Cliente</label>
-                            <input type="text" class="form-control" id="e_cliente" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" id="e_tel">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Modelo</label>
-                            <input type="text" class="form-control" id="e_modelo" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Tipo</label>
+                        <div class="form-group"><label class="form-label">Fecha</label><input type="date" class="form-control" id="e_fecha" required></div>
+                        <div class="form-group"><label class="form-label">Cliente</label><input type="text" class="form-control" id="e_cliente" required></div>
+                        <div class="form-group"><label class="form-label">Teléfono</label><input type="tel" class="form-control" id="e_tel"></div>
+                        <div class="form-group"><label class="form-label">Modelo</label><input type="text" class="form-control" id="e_modelo" required></div>
+                        <div class="form-group"><label class="form-label">Tipo</label>
                             <select class="form-control" id="e_tipo">
                                 <option value="Pantalla">Cambio de Pantalla</option>
                                 <option value="Batería">Cambio de Batería</option>
@@ -1301,26 +456,16 @@
                                 <option value="Otro">Otro</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Estado</label>
+                        <div class="form-group"><label class="form-label">Estado</label>
                             <select class="form-control" id="e_estado">
                                 <option value="Pendiente">Pendiente</option>
                                 <option value="Completada">Completada</option>
                                 <option value="Entregada">Entregada</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Costo</label>
-                            <input type="number" class="form-control" id="e_costo" step="0.01" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Cobro</label>
-                            <input type="number" class="form-control" id="e_cobro" step="0.01" min="0" required>
-                        </div>
-                        <div class="form-group full">
-                            <label class="form-label">Notas</label>
-                            <textarea class="form-control" id="e_notas"></textarea>
-                        </div>
+                        <div class="form-group"><label class="form-label">Costo</label><input type="number" class="form-control" id="e_costo" step="0.01" min="0" required></div>
+                        <div class="form-group"><label class="form-label">Cobro</label><input type="number" class="form-control" id="e_cobro" step="0.01" min="0" required></div>
+                        <div class="form-group full"><label class="form-label">Notas</label><textarea class="form-control" id="e_notas"></textarea></div>
                     </div>
                     <input type="hidden" id="e_id">
                     <div class="btn-group">
@@ -1334,41 +479,45 @@
 
     <div class="toast-container" id="toastBox"></div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuJKYbMZmOhpeQJOT9sYugGe3QD9AiES8",
+            authDomain: "reparaciones-dr-cell.firebaseapp.com",
+            projectId: "reparaciones-dr-cell",
+            storageBucket: "reparaciones-dr-cell.firebasestorage.app",
+            messagingSenderId: "201646739993",
+            appId: "1:201646739993:web:0ea0850794cdd514a69088"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const reparacionesRef = collection(db, "reparaciones");
+
+        window.fb = { db, reparacionesRef, addDoc, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy };
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+
     <script>
     (function() {
         'use strict';
-
-        // ============ DATA ============
         let db = [];
-        let cur = '$';
-        
-        try {
-            db = JSON.parse(localStorage.getItem('dc_repairs')) || [];
-        } catch(e) { db = []; }
-        
-        cur = localStorage.getItem('dc_currency') || '$';
+        let cur = localStorage.getItem('dc_currency') || '$';
+        let firebaseReady = false;
 
-        function save() {
-            try { localStorage.setItem('dc_repairs', JSON.stringify(db)); }
-            catch(e) { toast('Error al guardar', true); }
+        function setSyncStatus(state, text) {
+            const el = document.getElementById('syncStatus');
+            const txt = document.getElementById('syncText');
+            el.className = 'sync-status' + (state ? ' ' + state : '');
+            txt.textContent = text;
         }
-
-        function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
         function money(v) { return cur + parseFloat(v || 0).toFixed(2); }
         function todayStr() { return new Date().toISOString().split('T')[0]; }
-        function fmtDate(d) {
-            try {
-                const x = new Date(d + 'T12:00:00');
-                return x.toLocaleDateString('es', { day:'2-digit', month:'short', year:'numeric' });
-            } catch(e) { return d; }
-        }
-        function esc(s) {
-            const div = document.createElement('div');
-            div.textContent = s || '';
-            return div.innerHTML;
-        }
+        function fmtDate(d) { try { const x = new Date(d + 'T12:00:00'); return x.toLocaleDateString('es', { day:'2-digit', month:'short', year:'numeric' }); } catch(e) { return d; } }
+        function esc(s) { const div = document.createElement('div'); div.textContent = s || ''; return div.innerHTML; }
 
-        // ============ TOAST ============
         function toast(msg, err) {
             const box = document.getElementById('toastBox');
             const el = document.createElement('div');
@@ -1376,70 +525,74 @@
             el.innerHTML = '<i class="fas ' + (err ? 'fa-circle-xmark' : 'fa-circle-check') + '"></i> ' + msg;
             box.appendChild(el);
             requestAnimationFrame(function() { el.classList.add('show'); });
-            setTimeout(function() {
-                el.classList.remove('show');
-                setTimeout(function() { el.remove(); }, 300);
-            }, 2800);
+            setTimeout(function() { el.classList.remove('show'); setTimeout(function() { el.remove(); }, 300); }, 2800);
         }
 
-        // ============ NAV ============
-        function goTo(section) {
-            document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
-            document.querySelectorAll('.nav-item').forEach(function(b) { b.classList.remove('active'); });
-            
-            const sec = document.getElementById('sec-' + section);
-            if (sec) sec.classList.add('active');
-            
-            const btn = document.querySelector('.nav-item[data-section="' + section + '"]');
-            if (btn) btn.classList.add('active');
+        window.addEventListener('firebaseReady', function() {
+            firebaseReady = true;
+            startSync();
+        });
 
-            const titles = { dashboard:'Dashboard', nueva:'Nueva Reparación', listado:'Reparaciones', reportes:'Reportes', ajustes:'Ajustes' };
-            document.getElementById('pageTitle').textContent = titles[section] || '';
-
-            if (section === 'dashboard') renderDashboard();
-            if (section === 'listado') renderTable();
-            if (section === 'reportes') genReport();
-            if (section === 'ajustes') document.getElementById('currencySelect').value = cur;
-            if (section === 'nueva') document.getElementById('f_fecha').value = todayStr();
-
-            closeSidebar();
+        function startSync() {
+            setSyncStatus('syncing', 'Sincronizando...');
+            try {
+                const q = window.fb.query(window.fb.reparacionesRef, window.fb.orderBy('fecha', 'desc'));
+                window.fb.onSnapshot(q, function(snapshot) {
+                    db = [];
+                    snapshot.forEach(function(doc) { db.push(Object.assign({ id: doc.id }, doc.data())); });
+                    setSyncStatus('', 'Conectado');
+                    document.getElementById('loadingScreen').classList.add('hide');
+                    refreshUI();
+                }, function(err) {
+                    console.error('Error:', err);
+                    setSyncStatus('offline', 'Sin conexión');
+                    document.getElementById('loadingScreen').classList.add('hide');
+                    toast('Error de conexión', true);
+                });
+            } catch(e) {
+                console.error(e);
+                setSyncStatus('offline', 'Error');
+                document.getElementById('loadingScreen').classList.add('hide');
+                toast('Verifica Firebase', true);
+            }
         }
 
-        window.closeSidebar = function() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('sidebarOverlay').classList.remove('show');
-        };
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-
-        // ============ SAVE REPAIR ============
-        function saveRepair(e) {
-            e.preventDefault();
-            const r = {
-                id: uid(),
-                fecha: document.getElementById('f_fecha').value,
-                cliente: document.getElementById('f_cliente').value.trim(),
-                tel: document.getElementById('f_tel').value.trim(),
-                modelo: document.getElementById('f_modelo').value.trim(),
-                tipo: document.getElementById('f_tipo').value,
-                estado: document.getElementById('f_estado').value,
-                costo: parseFloat(document.getElementById('f_costo').value) || 0,
-                cobro: parseFloat(document.getElementById('f_cobro').value) || 0,
-                notas: document.getElementById('f_notas').value.trim(),
-                ts: Date.now()
-            };
-            db.push(r);
-            save();
-            e.target.reset();
-            document.getElementById('f_fecha').value = todayStr();
-            toast('Reparación registrada');
+        function refreshUI() {
+            const active = document.querySelector('.page-section.active');
+            if (!active) return;
+            const id = active.id;
+            if (id === 'sec-dashboard') renderDashboard();
+            if (id === 'sec-listado') renderTable();
+            if (id === 'sec-reportes') genReport();
             updateBadge();
         }
 
-        // ============ EDIT ============
+        async function saveRepair(e) {
+            e.preventDefault();
+            if (!firebaseReady) { toast('Esperando conexión...', true); return; }
+            const btn = document.getElementById('btnSaveRepair');
+            btn.disabled = true;
+            try {
+                const r = {
+                    fecha: document.getElementById('f_fecha').value,
+                    cliente: document.getElementById('f_cliente').value.trim(),
+                    tel: document.getElementById('f_tel').value.trim(),
+                    modelo: document.getElementById('f_modelo').value.trim(),
+                    tipo: document.getElementById('f_tipo').value,
+                    estado: document.getElementById('f_estado').value,
+                    costo: parseFloat(document.getElementById('f_costo').value) || 0,
+                    cobro: parseFloat(document.getElementById('f_cobro').value) || 0,
+                    notas: document.getElementById('f_notas').value.trim(),
+                    ts: Date.now()
+                };
+                await window.fb.addDoc(window.fb.reparacionesRef, r);
+                e.target.reset();
+                document.getElementById('f_fecha').value = todayStr();
+                toast('Guardada en la nube');
+            } catch(err) { console.error(err); toast('Error al guardar', true); }
+            finally { btn.disabled = false; }
+        }
+
         function openEdit(id) {
             const r = db.find(function(x) { return x.id === id; });
             if (!r) return;
@@ -1456,98 +609,92 @@
             document.getElementById('editModal').classList.add('open');
         }
 
-        function updateRepair(e) {
+        async function updateRepair(e) {
             e.preventDefault();
-            const id = document.getElementById('e_id').value;
-            const i = db.findIndex(function(x) { return x.id === id; });
-            if (i < 0) return;
-            db[i] = Object.assign({}, db[i], {
-                fecha: document.getElementById('e_fecha').value,
-                cliente: document.getElementById('e_cliente').value.trim(),
-                tel: document.getElementById('e_tel').value.trim(),
-                modelo: document.getElementById('e_modelo').value.trim(),
-                tipo: document.getElementById('e_tipo').value,
-                estado: document.getElementById('e_estado').value,
-                costo: parseFloat(document.getElementById('e_costo').value) || 0,
-                cobro: parseFloat(document.getElementById('e_cobro').value) || 0,
-                notas: document.getElementById('e_notas').value.trim()
-            });
-            save();
-            closeModal();
-            renderTable();
-            toast('Reparación actualizada');
-            updateBadge();
+            if (!firebaseReady) return;
+            try {
+                const id = document.getElementById('e_id').value;
+                const data = {
+                    fecha: document.getElementById('e_fecha').value,
+                    cliente: document.getElementById('e_cliente').value.trim(),
+                    tel: document.getElementById('e_tel').value.trim(),
+                    modelo: document.getElementById('e_modelo').value.trim(),
+                    tipo: document.getElementById('e_tipo').value,
+                    estado: document.getElementById('e_estado').value,
+                    costo: parseFloat(document.getElementById('e_costo').value) || 0,
+                    cobro: parseFloat(document.getElementById('e_cobro').value) || 0,
+                    notas: document.getElementById('e_notas').value.trim()
+                };
+                await window.fb.updateDoc(window.fb.doc(window.fb.db, "reparaciones", id), data);
+                closeModal();
+                toast('Actualizada');
+            } catch(err) { console.error(err); toast('Error', true); }
         }
 
-        function deleteRepair(id) {
+        async function deleteRepair(id) {
             if (!confirm('¿Eliminar esta reparación?')) return;
-            db = db.filter(function(x) { return x.id !== id; });
-            save();
-            renderTable();
-            toast('Eliminada');
-            updateBadge();
+            try {
+                await window.fb.deleteDoc(window.fb.doc(window.fb.db, "reparaciones", id));
+                toast('Eliminada');
+            } catch(err) { console.error(err); toast('Error', true); }
         }
 
-        function closeModal() {
-            document.getElementById('editModal').classList.remove('open');
+        function closeModal() { document.getElementById('editModal').classList.remove('open'); }
+
+        function goTo(section) {
+            document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
+            document.querySelectorAll('.nav-item').forEach(function(b) { b.classList.remove('active'); });
+            const sec = document.getElementById('sec-' + section);
+            if (sec) sec.classList.add('active');
+            const btn = document.querySelector('.nav-item[data-section="' + section + '"]');
+            if (btn) btn.classList.add('active');
+            const titles = { dashboard:'Dashboard', nueva:'Nueva Reparación', listado:'Reparaciones', reportes:'Reportes', ajustes:'Ajustes' };
+            document.getElementById('pageTitle').textContent = titles[section] || '';
+            if (section === 'dashboard') renderDashboard();
+            if (section === 'listado') renderTable();
+            if (section === 'reportes') genReport();
+            if (section === 'ajustes') document.getElementById('currencySelect').value = cur;
+            if (section === 'nueva') document.getElementById('f_fecha').value = todayStr();
+            closeSidebar();
         }
 
-        // ============ TABLE ============
+        window.closeSidebar = function() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        };
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+
         function renderTable() {
             const q = (document.getElementById('searchInput').value || '').toLowerCase();
             const est = document.getElementById('filterEstado').value;
             const desde = document.getElementById('filterDesde').value;
             const hasta = document.getElementById('filterHasta').value;
-
             let list = db.filter(function(r) {
                 if (q && !r.cliente.toLowerCase().includes(q) && !r.modelo.toLowerCase().includes(q) && !r.tipo.toLowerCase().includes(q)) return false;
                 if (est && r.estado !== est) return false;
                 if (desde && r.fecha < desde) return false;
                 if (hasta && r.fecha > hasta) return false;
                 return true;
-            }).sort(function(a, b) {
-                return b.fecha.localeCompare(a.fecha) || (b.ts || 0) - (a.ts || 0);
-            });
+            }).sort(function(a, b) { return b.fecha.localeCompare(a.fecha) || (b.ts || 0) - (a.ts || 0); });
 
             const tbody = document.getElementById('tableBody');
             const empty = document.getElementById('emptyTable');
-
-            if (!list.length) {
-                tbody.innerHTML = '';
-                empty.style.display = '';
-                return;
-            }
+            if (!list.length) { tbody.innerHTML = ''; empty.style.display = ''; return; }
             empty.style.display = 'none';
-
             tbody.innerHTML = list.map(function(r) {
                 const g = r.cobro - r.costo;
                 const cls = g >= 0 ? 'td-profit-up' : 'td-profit-down';
                 const badgeCls = r.estado === 'Pendiente' ? 'pending' : r.estado === 'Completada' ? 'complete' : 'delivered';
-                return '<tr>' +
-                    '<td>' + fmtDate(r.fecha) + '</td>' +
-                    '<td><span class="td-client">' + esc(r.cliente) + '</span>' + (r.tel ? '<br><span class="td-phone">' + esc(r.tel) + '</span>' : '') + '</td>' +
-                    '<td>' + esc(r.modelo) + '</td>' +
-                    '<td>' + esc(r.tipo) + '</td>' +
-                    '<td class="td-money">' + money(r.costo) + '</td>' +
-                    '<td class="td-money">' + money(r.cobro) + '</td>' +
-                    '<td class="td-money ' + cls + '">' + money(g) + '</td>' +
-                    '<td><span class="badge-status ' + badgeCls + '"><span class="dot"></span>' + r.estado + '</span></td>' +
-                    '<td class="actions-cell">' +
-                        '<button class="btn-icon" data-edit="' + r.id + '" title="Editar"><i class="fas fa-pen"></i></button>' +
-                        '<button class="btn-icon danger" data-del="' + r.id + '" title="Eliminar"><i class="fas fa-trash"></i></button>' +
-                    '</td>' +
-                '</tr>';
+                return '<tr><td>' + fmtDate(r.fecha) + '</td><td><span class="td-client">' + esc(r.cliente) + '</span>' + (r.tel ? '<br><span class="td-phone">' + esc(r.tel) + '</span>' : '') + '</td><td>' + esc(r.modelo) + '</td><td>' + esc(r.tipo) + '</td><td class="td-money">' + money(r.costo) + '</td><td class="td-money">' + money(r.cobro) + '</td><td class="td-money ' + cls + '">' + money(g) + '</td><td><span class="badge-status ' + badgeCls + '"><span class="dot"></span>' + r.estado + '</span></td><td class="actions-cell"><button class="btn-icon" data-edit="' + r.id + '"><i class="fas fa-pen"></i></button><button class="btn-icon danger" data-del="' + r.id + '"><i class="fas fa-trash"></i></button></td></tr>';
             }).join('');
-
-            tbody.querySelectorAll('[data-edit]').forEach(function(b) {
-                b.addEventListener('click', function() { openEdit(b.getAttribute('data-edit')); });
-            });
-            tbody.querySelectorAll('[data-del]').forEach(function(b) {
-                b.addEventListener('click', function() { deleteRepair(b.getAttribute('data-del')); });
-            });
+            tbody.querySelectorAll('[data-edit]').forEach(function(b) { b.addEventListener('click', function() { openEdit(b.getAttribute('data-edit')); }); });
+            tbody.querySelectorAll('[data-del]').forEach(function(b) { b.addEventListener('click', function() { deleteRepair(b.getAttribute('data-del')); }); });
         }
 
-        // ============ DASHBOARD ============
         function renderDashboard() {
             const total = db.length;
             const pend = db.filter(function(r) { return r.estado === 'Pendiente'; }).length;
@@ -1555,14 +702,12 @@
             const cos = db.reduce(function(s, r) { return s + r.costo; }, 0);
             const gan = ing - cos;
             const ganColor = gan >= 0 ? 'var(--success)' : 'var(--danger)';
-
             document.getElementById('dashStats').innerHTML =
                 '<div class="stat-card"><div class="stat-icon-wrap blue"><i class="fas fa-mobile-screen"></i></div><div class="stat-info"><div class="label">Total</div><div class="value">' + total + '</div><div class="sub">reparaciones</div></div></div>' +
                 '<div class="stat-card"><div class="stat-icon-wrap orange"><i class="fas fa-clock"></i></div><div class="stat-info"><div class="label">Pendientes</div><div class="value">' + pend + '</div><div class="sub">en proceso</div></div></div>' +
                 '<div class="stat-card"><div class="stat-icon-wrap purple"><i class="fas fa-arrow-trend-up"></i></div><div class="stat-info"><div class="label">Ingresos</div><div class="value">' + money(ing) + '</div><div class="sub">total cobrado</div></div></div>' +
                 '<div class="stat-card"><div class="stat-icon-wrap red"><i class="fas fa-arrow-trend-down"></i></div><div class="stat-info"><div class="label">Costos</div><div class="value">' + money(cos) + '</div><div class="sub">inversión</div></div></div>' +
                 '<div class="stat-card"><div class="stat-icon-wrap green"><i class="fas fa-sack-dollar"></i></div><div class="stat-info"><div class="label">Ganancia Neta</div><div class="value" style="color:' + ganColor + '">' + money(gan) + '</div><div class="sub">beneficio</div></div></div>';
-
             const activeTab = document.querySelector('.period-tab.active');
             const period = activeTab ? activeTab.getAttribute('data-period') : 'hoy';
             setPeriod(period);
@@ -1571,10 +716,7 @@
         }
 
         function setPeriod(p) {
-            document.querySelectorAll('.period-tab').forEach(function(b) {
-                b.classList.toggle('active', b.getAttribute('data-period') === p);
-            });
-
+            document.querySelectorAll('.period-tab').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-period') === p); });
             const f = filterPeriod(p);
             const ing = f.reduce(function(s, r) { return s + r.cobro; }, 0);
             const cos = f.reduce(function(s, r) { return s + r.costo; }, 0);
@@ -1582,7 +724,6 @@
             const cnt = f.length;
             const avg = cnt ? gan / cnt : 0;
             const ganColor = gan >= 0 ? 'var(--success)' : 'var(--danger)';
-
             document.getElementById('periodStats').innerHTML =
                 '<div class="stat-card"><div class="stat-icon-wrap blue"><i class="fas fa-hashtag"></i></div><div class="stat-info"><div class="label">Reparaciones</div><div class="value">' + cnt + '</div></div></div>' +
                 '<div class="stat-card"><div class="stat-icon-wrap purple"><i class="fas fa-hand-holding-dollar"></i></div><div class="stat-info"><div class="label">Ingresos</div><div class="value">' + money(ing) + '</div></div></div>' +
@@ -1623,10 +764,7 @@
                 const ds = d.toISOString().split('T')[0];
                 const dr = db.filter(function(r) { return r.fecha === ds; });
                 const g = dr.reduce(function(s, r) { return s + r.cobro - r.costo; }, 0);
-                days.push({
-                    label: d.toLocaleDateString('es', { weekday:'short', day:'numeric' }),
-                    profit: g
-                });
+                days.push({ label: d.toLocaleDateString('es', { weekday:'short', day:'numeric' }), profit: g });
             }
             const max = Math.max.apply(null, days.map(function(d) { return Math.abs(d.profit); }).concat([1]));
             el.innerHTML = days.map(function(d) {
@@ -1641,27 +779,18 @@
             const types = {};
             db.forEach(function(r) { types[r.tipo] = (types[r.tipo] || 0) + 1; });
             const sorted = Object.entries(types).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 8);
-            
-            if (!sorted.length) {
-                el.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:30px;font-size:0.85em;">Sin datos aún. Registra tu primera reparación.</p>';
-                return;
-            }
+            if (!sorted.length) { el.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:30px;font-size:0.85em;">Sin datos aún. Registra tu primera reparación.</p>'; return; }
             const max = sorted[0][1];
-            el.innerHTML = sorted.map(function(t) {
-                return '<div class="bar-row"><span class="bar-label">' + esc(t[0]) + '</span><div class="bar-track"><div class="bar-fill type-bar" style="width:' + ((t[1]/max)*100) + '%"></div></div><span class="bar-value">' + t[1] + '</span></div>';
-            }).join('');
+            el.innerHTML = sorted.map(function(t) { return '<div class="bar-row"><span class="bar-label">' + esc(t[0]) + '</span><div class="bar-track"><div class="bar-fill type-bar" style="width:' + ((t[1]/max)*100) + '%"></div></div><span class="bar-value">' + t[1] + '</span></div>'; }).join('');
         }
 
-        // ============ REPORTES ============
         function genReport() {
             const p = document.getElementById('reportPeriod').value;
             document.getElementById('rpFromWrap').style.display = p === 'custom' ? '' : 'none';
             document.getElementById('rpToWrap').style.display = p === 'custom' ? '' : 'none';
-
             const from = document.getElementById('rpFrom').value;
             const to = document.getElementById('rpTo').value;
             const f = filterPeriod(p, from, to);
-
             const ing = f.reduce(function(s, r) { return s + r.cobro; }, 0);
             const cos = f.reduce(function(s, r) { return s + r.costo; }, 0);
             const gan = ing - cos;
@@ -1669,11 +798,9 @@
             const comp = f.filter(function(r) { return r.estado !== 'Pendiente'; }).length;
             const pend = f.filter(function(r) { return r.estado === 'Pendiente'; }).length;
             const ganColor = gan >= 0 ? 'var(--success)' : 'var(--danger)';
-
             const types = {};
             f.forEach(function(r) { types[r.tipo] = (types[r.tipo] || 0) + 1; });
             const topT = Object.entries(types).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 5);
-
             const clients = {};
             f.forEach(function(r) {
                 if (!clients[r.cliente]) clients[r.cliente] = { n: 0, t: 0 };
@@ -1681,53 +808,27 @@
                 clients[r.cliente].t += r.cobro;
             });
             const topC = Object.entries(clients).sort(function(a, b) { return b[1].t - a[1].t; }).slice(0, 5);
-
             const labels = { hoy:'Hoy', semana:'Esta Semana', mes:'Este Mes', todo:'Todo el Historial', custom:'Período Personalizado' };
-
-            let topTHtml = topT.length 
-                ? topT.map(function(t) { return '<div class="summary-row-item"><span class="sr-label">' + esc(t[0]) + '</span><span class="sr-value">' + t[1] + '</span></div>'; }).join('')
-                : '<p style="color:var(--text-muted);font-size:0.85em;padding:8px 0;">Sin datos</p>';
-
-            let topCHtml = topC.length
-                ? topC.map(function(c) { return '<div class="summary-row-item"><span class="sr-label">' + esc(c[0]) + ' <small style="color:var(--text-light)">(' + c[1].n + ')</small></span><span class="sr-value">' + money(c[1].t) + '</span></div>'; }).join('')
-                : '<p style="color:var(--text-muted);font-size:0.85em;padding:8px 0;">Sin datos</p>';
-
+            const topTHtml = topT.length ? topT.map(function(t) { return '<div class="summary-row-item"><span class="sr-label">' + esc(t[0]) + '</span><span class="sr-value">' + t[1] + '</span></div>'; }).join('') : '<p style="color:var(--text-muted);font-size:0.85em;padding:8px 0;">Sin datos</p>';
+            const topCHtml = topC.length ? topC.map(function(c) { return '<div class="summary-row-item"><span class="sr-label">' + esc(c[0]) + ' <small style="color:var(--text-light)">(' + c[1].n + ')</small></span><span class="sr-value">' + money(c[1].t) + '</span></div>'; }).join('') : '<p style="color:var(--text-muted);font-size:0.85em;padding:8px 0;">Sin datos</p>';
             document.getElementById('reportContent').innerHTML =
-                '<div class="card" style="margin:0;box-shadow:none;">' +
-                    '<div class="card-header"><h3>Resumen — ' + labels[p] + '</h3></div>' +
-                    '<div class="card-body">' +
-                        '<div class="summary-list">' +
-                            '<div class="summary-row-item"><span class="sr-label">Reparaciones</span><span class="sr-value">' + cnt + '</span></div>' +
-                            '<div class="summary-row-item"><span class="sr-label">Terminadas</span><span class="sr-value" style="color:var(--success)">' + comp + '</span></div>' +
-                            '<div class="summary-row-item"><span class="sr-label">Pendientes</span><span class="sr-value" style="color:var(--warning)">' + pend + '</span></div>' +
-                            '<div class="summary-row-item"><span class="sr-label">Ingresos</span><span class="sr-value">' + money(ing) + '</span></div>' +
-                            '<div class="summary-row-item"><span class="sr-label">Costos</span><span class="sr-value" style="color:var(--danger)">' + money(cos) + '</span></div>' +
-                            '<div class="summary-row-item total-row"><span class="sr-label">Ganancia Neta</span><span class="sr-value" style="color:' + ganColor + ';font-size:1.1em;">' + money(gan) + '</span></div>' +
-                            '<div class="summary-row-item"><span class="sr-label">Promedio por reparación</span><span class="sr-value">' + money(cnt ? gan/cnt : 0) + '</span></div>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="card" style="margin:0;box-shadow:none;">' +
-                    '<div class="card-header"><h3>Desglose</h3></div>' +
-                    '<div class="card-body">' +
-                        '<div class="sub-heading">Top Reparaciones</div>' +
-                        '<div class="summary-list">' + topTHtml + '</div>' +
-                        '<div class="sub-heading-spaced">Top Clientes</div>' +
-                        '<div class="summary-list">' + topCHtml + '</div>' +
-                    '</div>' +
-                '</div>';
+                '<div class="card" style="margin:0;box-shadow:none;"><div class="card-header"><h3>Resumen — ' + labels[p] + '</h3></div><div class="card-body"><div class="summary-list">' +
+                '<div class="summary-row-item"><span class="sr-label">Reparaciones</span><span class="sr-value">' + cnt + '</span></div>' +
+                '<div class="summary-row-item"><span class="sr-label">Terminadas</span><span class="sr-value" style="color:var(--success)">' + comp + '</span></div>' +
+                '<div class="summary-row-item"><span class="sr-label">Pendientes</span><span class="sr-value" style="color:var(--warning)">' + pend + '</span></div>' +
+                '<div class="summary-row-item"><span class="sr-label">Ingresos</span><span class="sr-value">' + money(ing) + '</span></div>' +
+                '<div class="summary-row-item"><span class="sr-label">Costos</span><span class="sr-value" style="color:var(--danger)">' + money(cos) + '</span></div>' +
+                '<div class="summary-row-item total-row"><span class="sr-label">Ganancia Neta</span><span class="sr-value" style="color:' + ganColor + ';font-size:1.1em;">' + money(gan) + '</span></div>' +
+                '<div class="summary-row-item"><span class="sr-label">Promedio por reparación</span><span class="sr-value">' + money(cnt ? gan/cnt : 0) + '</span></div>' +
+                '</div></div></div>' +
+                '<div class="card" style="margin:0;box-shadow:none;"><div class="card-header"><h3>Desglose</h3></div><div class="card-body"><div class="sub-heading">Top Reparaciones</div><div class="summary-list">' + topTHtml + '</div><div class="sub-heading-spaced">Top Clientes</div><div class="summary-list">' + topCHtml + '</div></div></div>';
         }
 
-        // ============ EXPORT/IMPORT ============
         function exportCSV() {
             if (!db.length) { toast('No hay datos para exportar', true); return; }
             const h = ['Fecha','Cliente','Telefono','Modelo','Tipo','Estado','Costo','Cobro','Ganancia','Notas'];
-            const rows = db.map(function(r) {
-                return [r.fecha, r.cliente, r.tel||'', r.modelo, r.tipo, r.estado, r.costo, r.cobro, r.cobro-r.costo, r.notas||''];
-            });
-            let csv = h.join(',') + '\n' + rows.map(function(r) {
-                return r.map(function(v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(',');
-            }).join('\n');
+            const rows = db.map(function(r) { return [r.fecha, r.cliente, r.tel||'', r.modelo, r.tipo, r.estado, r.costo, r.cobro, r.cobro-r.costo, r.notas||'']; });
+            let csv = h.join(',') + '\n' + rows.map(function(r) { return r.map(function(v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
             dl(csv, 'DrCell_Reparaciones.csv', 'text/csv');
             toast('CSV exportado');
         }
@@ -1736,45 +837,6 @@
             const data = JSON.stringify({ repairs: db, currency: cur, date: new Date().toISOString() }, null, 2);
             dl(data, 'DrCell_Backup_' + todayStr() + '.json', 'application/json');
             toast('Backup descargado');
-        }
-
-        function importData(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                try {
-                    const data = JSON.parse(ev.target.result);
-                    if (data.repairs && Array.isArray(data.repairs)) {
-                        const merge = confirm('¿Reemplazar datos actuales?\n\nAceptar = Reemplazar\nCancelar = Agregar a los existentes');
-                        db = merge ? data.repairs : db.concat(data.repairs);
-                        if (data.currency) {
-                            cur = data.currency;
-                            localStorage.setItem('dc_currency', cur);
-                        }
-                        save();
-                        toast(db.length + ' reparaciones cargadas');
-                        updateBadge();
-                        renderDashboard();
-                    } else {
-                        toast('Archivo no válido', true);
-                    }
-                } catch(err) {
-                    toast('Error al leer el archivo', true);
-                }
-                e.target.value = '';
-            };
-            reader.readAsText(file);
-        }
-
-        function clearAll() {
-            if (!confirm('¿Borrar TODOS los datos? Esta acción no se puede deshacer.')) return;
-            if (!confirm('Confirmación final: ¿Continuar?')) return;
-            db = [];
-            save();
-            toast('Datos eliminados');
-            updateBadge();
-            renderDashboard();
         }
 
         function dl(content, name, type) {
@@ -1791,82 +853,47 @@
             cur = document.getElementById('currencySelect').value;
             localStorage.setItem('dc_currency', cur);
             toast('Moneda actualizada');
+            refreshUI();
         }
 
         function updateBadge() {
             const pend = db.filter(function(r) { return r.estado === 'Pendiente'; }).length;
             const badge = document.getElementById('pendingBadge');
-            if (pend > 0) {
-                badge.textContent = pend;
-                badge.style.display = '';
-            } else {
-                badge.style.display = 'none';
-            }
+            if (pend > 0) { badge.textContent = pend; badge.style.display = ''; }
+            else { badge.style.display = 'none'; }
         }
 
-        // ============ EVENT LISTENERS ============
         document.addEventListener('DOMContentLoaded', init);
         if (document.readyState !== 'loading') init();
 
         function init() {
-            // Nav buttons
-            document.querySelectorAll('.nav-item').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    goTo(btn.getAttribute('data-section'));
-                });
-            });
-
-            // Period tabs
-            document.querySelectorAll('.period-tab').forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    setPeriod(btn.getAttribute('data-period'));
-                });
-            });
-
-            // Forms
+            document.querySelectorAll('.nav-item').forEach(function(btn) { btn.addEventListener('click', function() { goTo(btn.getAttribute('data-section')); }); });
+            document.querySelectorAll('.period-tab').forEach(function(btn) { btn.addEventListener('click', function() { setPeriod(btn.getAttribute('data-period')); }); });
             document.getElementById('repairForm').addEventListener('submit', saveRepair);
             document.getElementById('editForm').addEventListener('submit', updateRepair);
-
-            // Filters
             document.getElementById('searchInput').addEventListener('input', renderTable);
             document.getElementById('filterEstado').addEventListener('change', renderTable);
             document.getElementById('filterDesde').addEventListener('change', renderTable);
             document.getElementById('filterHasta').addEventListener('change', renderTable);
-
-            // Report
             document.getElementById('reportPeriod').addEventListener('change', genReport);
             document.getElementById('rpFrom').addEventListener('change', genReport);
             document.getElementById('rpTo').addEventListener('change', genReport);
-
-            // Modal
             document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
             document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
-            document.getElementById('editModal').addEventListener('click', function(e) {
-                if (e.target === this) closeModal();
-            });
-
-            // Buttons
+            document.getElementById('editModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
             document.getElementById('btnNew').addEventListener('click', function() { goTo('nueva'); });
             document.getElementById('btnPrint').addEventListener('click', function() { window.print(); });
             document.getElementById('btnCSV').addEventListener('click', exportCSV);
+            document.getElementById('btnCSV2').addEventListener('click', exportCSV);
             document.getElementById('btnExportBackup').addEventListener('click', exportData);
-            document.getElementById('btnImport').addEventListener('click', function() {
-                document.getElementById('importFile').click();
-            });
-            document.getElementById('importFile').addEventListener('change', importData);
-            document.getElementById('btnClear').addEventListener('click', clearAll);
             document.getElementById('currencySelect').addEventListener('change', saveCurrency);
             document.getElementById('mobileToggle').addEventListener('click', toggleSidebar);
-
-            // Init
             document.getElementById('topDate').textContent = new Date().toLocaleDateString('es', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
             document.getElementById('f_fecha').value = todayStr();
             document.getElementById('currencySelect').value = cur;
-            updateBadge();
-            renderDashboard();
+            setSyncStatus('syncing', 'Conectando...');
         }
     })();
     </script>
-
 </body>
 </html>
